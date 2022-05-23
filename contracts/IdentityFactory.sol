@@ -20,16 +20,16 @@ interface IERC721 {
 }
 
 contract IdentityFactory {
-    address[] private owners;
-    mapping(address => bool) private isOwner;
+    address[] public owners;
+    mapping(address => bool) public isOwner;
 
-    mapping(address => uint256) private equities;
+    mapping(address => uint256) public equities;
 
     struct NFT {
-        address sentBy;
+        address sentBy; // original owner of the nft
         address collection;
         uint256 tokenId;
-        uint256 sentAt;
+        uint256 sentAt; // block number at which nft is sent
     }
 
     NFT[] public nfts;
@@ -59,10 +59,12 @@ contract IdentityFactory {
         );
 
         IERC721(nftCollection).safeTransferFrom(
-            msg.sender,
-            address(this),
+            msg.sender, // from
+            address(this), // to
             tokenId
         );
+
+        // save transferred nft data for the record
         NFT memory nft = NFT(msg.sender, nftCollection, tokenId, block.number);
         nfts.push(nft);
     }
@@ -72,11 +74,7 @@ contract IdentityFactory {
         view
         returns (bool, uint256)
     {
-        // need to think about the case where the nft can be sent without using transferNFT() function
-        // how do we find about the since then? or can we prevent sending it directly?
-        // 
-
-        bool doIHave = IERC721(nftCollection).ownerOf(tokenId) == address(this);
+        bool doIHave;
         uint256 since;
 
         for (uint256 i = 0; i < nfts.length; ++i) {
@@ -84,6 +82,7 @@ contract IdentityFactory {
                 nfts[i].collection == nftCollection &&
                 nfts[i].tokenId == tokenId
             ) {
+                doIHave = true;
                 since = block.number - nfts[i].sentAt;
             }
         }
@@ -97,20 +96,25 @@ contract IdentityFactory {
     }
 
     function withdraw() public onlyOwners {
-        // withdraws eth and ERC20 tokens balance according to the equities
+        // withdraws NATIVE TOKEN and ERC20 tokens balance according to the equities
 
         uint256 etherBal = address(this).balance;
 
         for (uint256 i = 0; i < owners.length; i++) {
-            for (uint256 j = 0; j < acceptedTokens.length; j++) {
+            payable(owners[i]).transfer(etherBal * equities[owners[i]]);
+        }
+
+        for (uint256 j = 0; j < acceptedTokens.length; j++) {
+            uint256 erc20Bal = IERC20(acceptedTokens[j]).balanceOf(
+                address(this)
+            );
+
+            for (uint256 i = 0; i < owners.length; i++) {
                 IERC20(acceptedTokens[j]).transfer(
                     owners[i],
-                    equities[owners[i]] *
-                        IERC20(acceptedTokens[j]).balanceOf(address(this))
+                    erc20Bal * equities[owners[i]]
                 );
             }
-
-            payable(owners[i]).transfer(etherBal * equities[owners[i]]);
         }
     }
 
@@ -123,22 +127,10 @@ contract IdentityFactory {
                 nfts[i].tokenId
             );
         }
-        delete nfts;
-    }
-
-    function destruct() public onlyOwners {
-        // USE WITH CAUTION
-        disintegrate();
         selfdestruct(payable(msg.sender));
     }
 
-    // function disintegrateInit() public onlyOwners {
-    //     // require message sender to be in owners array
-    //     withdraw();
-    // }
-
-    // function disintegrateFinalize() public onlyOwners {
-    //     // return all NFTs to original owner
-
-    // }
+    function recieve() external payable {
+        // receive ether
+    }
 }
