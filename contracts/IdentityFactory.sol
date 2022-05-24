@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+
 interface IERC20 {
     function transfer(address _to, uint256 _value) external;
 
@@ -19,11 +21,12 @@ interface IERC721 {
     function getApproved(uint256 _tokenId) external returns (address owner);
 }
 
-contract IdentityFactory {
+// extends ERC721 receiver contract
+contract IdentityFactory is IERC721Receiver {
     address[] public owners;
     mapping(address => bool) public isOwner;
 
-    mapping(address => uint256) public equities;
+    mapping(address => uint256) public equities; // percentage of equity
 
     struct NFT {
         address sentBy; // original owner of the nft
@@ -101,7 +104,7 @@ contract IdentityFactory {
         uint256 etherBal = address(this).balance;
 
         for (uint256 i = 0; i < owners.length; i++) {
-            payable(owners[i]).transfer(etherBal * equities[owners[i]]);
+            payable(owners[i]).transfer(etherBal * (equities[owners[i]] / 100));
         }
 
         for (uint256 j = 0; j < acceptedTokens.length; j++) {
@@ -112,7 +115,7 @@ contract IdentityFactory {
             for (uint256 i = 0; i < owners.length; i++) {
                 IERC20(acceptedTokens[j]).transfer(
                     owners[i],
-                    erc20Bal * equities[owners[i]]
+                    erc20Bal * (equities[owners[i]] / 100)
                 );
             }
         }
@@ -130,7 +133,17 @@ contract IdentityFactory {
         selfdestruct(payable(msg.sender));
     }
 
-    function recieve() external payable {
+    receive() external payable {
         // receive ether
+    }
+
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes memory
+    ) public virtual override returns (bytes4) {
+        // enables the contract to recieve a nft
+        return this.onERC721Received.selector;
     }
 }
