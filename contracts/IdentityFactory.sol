@@ -21,7 +21,7 @@ interface IERC721 {
     function getApproved(uint256 _tokenId) external returns (address owner);
 }
 
-// extends ERC721 receiver contract
+// Extends ERC721 receiver contract
 contract IdentityFactory is IERC721Receiver {
     address[] public owners;
     mapping(address => bool) public isOwner;
@@ -98,13 +98,13 @@ contract IdentityFactory is IERC721Receiver {
         acceptedTokens.push(token);
     }
 
-    function withdraw() public onlyOwners {
+    function withdraw() public onlyOwners returns (uint256[2] memory) {
         // withdraws NATIVE TOKEN and ERC20 tokens balance according to the equities
 
         uint256 etherBal = address(this).balance;
 
         for (uint256 i = 0; i < owners.length; i++) {
-            payable(owners[i]).transfer(etherBal * (equities[owners[i]] / 100));
+            payable(owners[i]).transfer((etherBal * equities[owners[i]]) / 100);
         }
 
         for (uint256 j = 0; j < acceptedTokens.length; j++) {
@@ -115,7 +115,7 @@ contract IdentityFactory is IERC721Receiver {
             for (uint256 i = 0; i < owners.length; i++) {
                 IERC20(acceptedTokens[j]).transfer(
                     owners[i],
-                    erc20Bal * (equities[owners[i]] / 100)
+                    (erc20Bal * equities[owners[i]]) / 100
                 );
             }
         }
