@@ -1,23 +1,31 @@
 import 'tailwindcss/tailwind.css'
-import { APP_NAME } from '@/lib/consts'
 import '@rainbow-me/rainbowkit/styles.css'
-import { chain, createClient, WagmiConfig } from 'wagmi'
-import { configureChains, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+
 import { publicProvider } from 'wagmi/providers/public';
-  
+import { chain, createClient, WagmiConfig, configureChains } from 'wagmi'
+import { getDefaultWallets, RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
+import Nav from "@/components/Nav";
+
 const { chains, provider } = configureChains(
-	[chain.optimism],
-	[apiProvider.infura(process.env.NEXT_PUBLIC_INFURA_ID), apiProvider.fallback()]
+	[chain.polygonMumbai],
+	[publicProvider()]
 )
 
-const { connectors } = getDefaultWallets({ appName: APP_NAME, chains })
+const { connectors } = getDefaultWallets({ appName: "Identities", chains })
 const wagmiClient = createClient({ autoConnect: true, connectors, provider })
 
 const App = ({ Component, pageProps }) => {
 	return (
 		<WagmiConfig client={wagmiClient}>
-			<RainbowKitProvider chains={chains}>
-				<Component {...pageProps} />
+			<RainbowKitProvider theme={{
+				lightMode: lightTheme(),
+				darkMode: darkTheme(),
+			}} chains={chains}>
+				{/* <div className="bg-gray-100 dark:bg-gray-900 border-b-[1px] dark:text-gray-100 h-screen flex font-sans"> */}
+				<div className="bg-gray-100 h-screen flex flex-col font-sans">
+					<Nav />
+					<Component {...pageProps} />
+				</div>
 			</RainbowKitProvider>
 		</WagmiConfig>
 	)

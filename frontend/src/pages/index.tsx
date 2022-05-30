@@ -1,12 +1,21 @@
-import { FC } from 'react'
-import { APP_NAME } from '@/lib/consts'
-import { BookOpenIcon, CodeIcon, ShareIcon } from '@heroicons/react/outline'
+import { FC, useEffect } from 'react'
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { useAccount } from "wagmi"
+import { useRouter } from "next/router";
 
 const Home: FC = () => {
+	const { data } = useAccount();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (data?.address) {
+			router.push("/dashboard");
+		}
+	}, [data])
+
 	return (
-		<div className="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-		<ConnectButton />	
+		<div className="flex justify-center items-center">
+			<ConnectButton />
 		</div>
 	)
 }
