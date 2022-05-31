@@ -2,11 +2,11 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const identityFactory = await ethers.getContractFactory("Identities");
+  const identityFactory = await ethers.getContractFactory("IdentityFactory");
   const identity = await identityFactory.deploy();
   await identity.deployed();
 
-  console.log("Identities Generator deployed to:", identity.address);
+  console.log("Identity Factory deployed to:", identity.address);
 }
 
 const runMain = () => {
