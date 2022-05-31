@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
-import { useAccount, useContractWrite } from "wagmi";
-import IdentitesABI from "../utils/IdentitiesABI.json";
+import { useAccount, useContractWrite, useContractEvent } from "wagmi";
+import { abi } from "../utils/IdentityFactory.json";
 
 const Create = () => {
     const { data } = useAccount();
@@ -50,14 +50,22 @@ const Create = () => {
     // }
 
 
-    const identitiesConfig = {
-        addressOrName: '0x12e821387ca60c4ab557d39a3dc0b7b65c8d0f0f',
-        contractInterface: IdentitesABI,
+    const identityFactoryConfig = {
+        addressOrName: '0x3adF99a751732dd83E3C91f7Cd42e4180EE39101',
+        contractInterface: abi,
     }
 
     const { data: txData, isLoading, isSuccess, write } = useContractWrite(
-        identitiesConfig,
-        'createNewIdentity'
+        identityFactoryConfig,
+        'createIdentity'
+    )
+
+    useContractEvent(
+        identityFactoryConfig,
+        'NewIdentity',
+        (event) => {
+            router.push(`/identity/${event.identity}`)
+        }, { once: true }
     )
 
     const useCreateIdentity = () => {
@@ -89,7 +97,7 @@ const Create = () => {
         });
 
     }
-    
+
     if (isLoading) {
         try {
             console.log(`mining txn : https://mumbai.polygonscan.com/tx/${txData.hash}`)
@@ -99,8 +107,9 @@ const Create = () => {
     }
 
     if (isSuccess) {
-        // alert("successfully created identity")
+        console.log("successfully created identity, you will be redirected in few secs!")
         console.log(txData)
+        // const idenitiyAddress = txData
         // router.push(`/identity/${identityAddress}`)
         // router.push("/dashboard")
     }
