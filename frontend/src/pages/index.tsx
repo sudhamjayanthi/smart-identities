@@ -14,7 +14,7 @@ const Home: FC = () => {
 	}, [data])
 
 	return (
-		<div className="flex justify-center items-center">
+		<div className="flex flex-1 justify-center items-center">
 			<ConnectButton />
 		</div>
 	)

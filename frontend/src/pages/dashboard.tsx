@@ -1,7 +1,17 @@
 import { useRouter } from "next/router"
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 const Dashboard = () => {
     const router = useRouter();
+    const { data } = useAccount();
+
+    useEffect(() => {
+        if (!data?.address) {
+            router.push("/");
+        }
+    }, [data])
+
 
     return (
         <div className="flex flex-col flex-1 justify-center items-center gap-10">

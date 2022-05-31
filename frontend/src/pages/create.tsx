@@ -51,13 +51,13 @@ const Create = () => {
 
 
     const identitiesConfig = {
-        addressOrName: '0x3cC6E5Cccd90715d1E05e11343F391E6E2D9C971',
+        addressOrName: '0x12e821387ca60c4ab557d39a3dc0b7b65c8d0f0f',
         contractInterface: IdentitesABI,
     }
 
-    const {  data : txData ,write } = useContractWrite(
+    const { data: txData, isLoading, isSuccess, write } = useContractWrite(
         identitiesConfig,
-        'createIdentity'
+        'createNewIdentity'
     )
 
     const useCreateIdentity = () => {
@@ -69,15 +69,17 @@ const Create = () => {
         })
 
         if (duplicateAddress) {
-            console.log(addresses)
+            console.log("list of addresses : ", addresses)
             alert("all the owners should be unique")
+            return
         }
 
         const equitiesSum = equities.reduce((a, b) => a + b, 0)
 
         if (equitiesSum !== 100) {
-            console.log(equitiesSum)
+            console.log("sum of equities : ", equitiesSum)
             alert("equities should add up to 100 %")
+            return
         }
 
         console.log("no validation errors")
@@ -85,7 +87,22 @@ const Create = () => {
         write({
             args: [addresses, equities]
         });
+
+    }
+    
+    if (isLoading) {
+        try {
+            console.log(`mining txn : https://mumbai.polygonscan.com/tx/${txData.hash}`)
+        } catch {
+
+        }
+    }
+
+    if (isSuccess) {
+        // alert("successfully created identity")
         console.log(txData)
+        // router.push(`/identity/${identityAddress}`)
+        // router.push("/dashboard")
     }
 
     // const deleteOwner = i => {
@@ -109,7 +126,7 @@ const Create = () => {
                                 <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                                     <div>
                                         <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Address</label>
-                                        <input {...register("address", { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="0x79…aA7C" required />
+                                        <input {...register("address", { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white outline-none" defaultValue={owners.length !== 0 ? "" : data?.address} required />
                                         {errors.address && <span className="text-red-400">Please enter a valid address</span>}
                                     </div>
                                     <div>
