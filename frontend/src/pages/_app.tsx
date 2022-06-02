@@ -18,12 +18,12 @@ const wagmiClient = createClient({ autoConnect: true, connectors, provider })
 const App = ({ Component, pageProps }) => {
 	return (
 		<WagmiConfig client={wagmiClient}>
-			<RainbowKitProvider theme={{
+			<RainbowKitProvider showRecentTransactions={true} theme={{
 				lightMode: lightTheme(),
 				darkMode: darkTheme(),
 			}} chains={chains}>
 				{/* <div className="bg-gray-100 dark:bg-gray-900 border-b-[1px] dark:text-gray-100 h-screen flex font-sans"> */}
-				<div className="bg-gray-100 h-screen flex flex-col font-[inter]">
+				<div className="min-h-screen bg-gray-100 flex flex-col overflow-hidden font-[inter]">
 					<Nav />
 					<Component {...pageProps} />
 				</div>

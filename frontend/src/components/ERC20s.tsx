@@ -1,0 +1,70 @@
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+import { ethers } from "ethers";
+import { useEffect, useState } from 'react'
+import { useForm } from "react-hook-form";
+import { erc20ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
+import Modal from "./Modal";
+
+function NFTs({ isOwner, identityConfig }) {
+    const { data: signer } = useSigner()
+    const { data: acceptedTokens } = useContractRead(identityConfig, "getAcceptedTokens")
+    const { data: acceptErc20Tx, write: acceptErc20 } = useContractWrite(identityConfig, "acceptErc20");
+
+    const { register, handleSubmit, watch, formState: { errors }, setError, clearErrors } = useForm();
+    const addTxn = useAddRecentTransaction();
+
+    const onSubmit = async (data) => {
+        if (acceptedTokens.includes(data.address)) alert("already accepted this token")
+
+        try {
+            const contract = new ethers.Contract(data.address, erc20ABI, signer)
+            const bal  = await contract.balanceOf(identityConfig.addressOrName) // validates if the given address is a erc20 contract
+            console.log(bal)
+        } catch (e) {
+            console.log(e)
+            setError("address", { type: "custom", message: "not a valid erc20 contract" })
+        }
+
+        acceptErc20({ args: [data.address] })
+    }
+
+    const getBalance = (address) => {
+
+    }
+
+    useEffect(() => {
+        console.log(`adding erc20 to accepted token, txn : https://mumbai.polygonscan.com/tx/${acceptErc20Tx?.hash}`)
+        if (acceptErc20Tx?.hash) addTxn({
+            hash: acceptErc20Tx?.hash,
+            description: 'adding erc20 to accepted token',
+        })
+    }, [acceptErc20Tx])
+
+    return (
+        <div className="flex flex-col gap-5">
+            <h2 className="subheading">Accepted ERC20s</h2>
+            {acceptedTokens?.map(acceptedToken => <span className="mr-1 p-2 rounded bg-gray-900 bg-opacity-10">{acceptedToken}</span>)}
+            {isOwner &&
+                <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="flex flex-col gap-3 mt-4">
+                            <label htmlFor="address">Token Address</label>
+                            <input
+                                type="text"
+                                name="address"
+                                id="address"
+                                className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
+                                {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
+                            />
+                            {errors.address && <span className="text-red-400">Please enter a valid address</span>}
+                            Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens.
+                            <button type="submit" className="btn bg-blue-600">Confirm</button>
+                        </div>
+                    </form>
+                </Modal>
+            }
+        </div>
+    )
+}
+
+export default NFTs

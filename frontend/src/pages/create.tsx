@@ -5,50 +5,12 @@ import { useAccount, useContractWrite, useContractEvent } from "wagmi";
 import { abi } from "../utils/IdentityFactory.json";
 
 const Create = () => {
-    const { data } = useAccount();
     const router = useRouter();
+    const { data } = useAccount();
 
     const [owners, setOwners] = useState([])
     const [showModal, setShowModal] = useState(false)
-
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
-    const onSubmit = (data) => {
-        setOwners([...owners, data])
-        setShowModal(false)
-        console.log(data)
-    };
-
-    useEffect(() => {
-        if (!data?.address) {
-            router.push("/");
-        }
-    }, [data])
-
-    // const isNotValid = () => {
-    //     const addresses = owners.map(owner => owner.address);
-    //     const equities = owners.map(owner => parseInt(owner.equity));
-
-    //     const duplicateAddress = addresses.some((address) => {
-    //         return addresses.indexOf(address) !== addresses.lastIndexOf(address); // checks for multiple instances of same address
-    //     })
-
-    //     if (duplicateAddress) {
-    //         console.log(addresses)
-    //         return "all the owners should be unique"
-    //     }
-
-    //     const equitiesSum = equities.reduce((a, b) => a + b, 0)
-
-    //     if (equitiesSum !== 100) {
-    //         console.log(equitiesSum)
-    //         return "equities should add up to 100 %"
-    //     }
-
-    //     console.log("no validation errors")
-    //     return 0
-    // }
-
 
     const identityFactoryConfig = {
         addressOrName: '0x3adF99a751732dd83E3C91f7Cd42e4180EE39101',
@@ -68,7 +30,7 @@ const Create = () => {
         }, { once: true }
     )
 
-    const useCreateIdentity = () => {
+    const createIdentity = () => {
         const addresses = owners.map(owner => owner.address);
         const equities = owners.map(owner => parseInt(owner.equity));
 
@@ -114,11 +76,23 @@ const Create = () => {
         // router.push("/dashboard")
     }
 
-    // const deleteOwner = i => {
-    //     let arr = owners
-    //     arr.splice(i)
-    //     setOwners(arr)
-    // }
+    useEffect(() => {
+        if (!data?.address) {
+            router.push("/");
+        }
+    }, [data])
+
+    const deleteOwner = i => {
+        const arr = [...owners]
+        arr.splice(i)
+        setOwners(arr)
+    }
+
+    const onSubmit = (data) => {
+        setOwners([...owners, data])
+        setShowModal(false)
+        console.log(data)
+    };
 
     return (
         <div className="flex flex-col flex-1 justify-center items-center gap-10">
@@ -152,7 +126,7 @@ const Create = () => {
                 </div>
             ) : (
                 <>
-                    <div className="flex gap-20">
+                    <div className="flex justify-between gap-20 w-1/2">
                         <h2 className="text-3xl font-extrabold text-blue-600">Owners</h2>
                         <button onClick={() => {
                             setShowModal(true);
@@ -163,10 +137,10 @@ const Create = () => {
                             </svg>Add User
                         </button>
                     </div>
-                    <table className="table-auto border-fixed">
+                    <table className="table-auto border-fixed w-1/2">
                         <thead>
                             <tr>
-                                <th className="p-2 border border-slate-300">Address</th>
+                                <th className="p-2 border w-3/4 border-slate-300">Address</th>
                                 <th className="p-2 border border-slate-300">Equity</th>
                             </tr>
                         </thead>
@@ -174,20 +148,25 @@ const Create = () => {
                             {owners.map((owner, idx) => {
                                 return (
                                     <>
-                                        {/* <tr key={idx} className="cursor-pointer" onClick={() => deleteOwner(idx)}> */}
-                                        <tr key={idx} >
-                                            <td className="p-2 border border-slate-300">{owner.address}</td>
-                                            <td className="p-2 border border-slate-300">{owner.equity} %</td>
+                                        <tr key={idx} className="cursor-pointer" onClick={() => {
+                                            console.log(owner, idx)
+                                            deleteOwner(idx)
+                                            console.log(owners)
+                                        }}>
+                                            {/* <tr key={idx} > */}
+                                            <td className="p-2 border text-center border-slate-300">{owner.address}</td>
+                                            <td className="p-2 border text-center border-slate-300">{owner.equity} %</td>
                                         </tr>
                                     </>
                                 )
                             })}
                         </tbody>
                     </table>
+                    <span className="text-gray-500 text-sm">click on any row to delete it</span>
 
-                    <button onClick={useCreateIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    <button onClick={createIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
                         </svg>Create Identity
                     </button>
                 </>
