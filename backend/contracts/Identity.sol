@@ -29,8 +29,9 @@ interface IERC721 {
 // Extends ERC721 receiver contract
 contract Identity is IERC721Receiver {
     address[] public owners;
-    mapping(address => bool) public isOwner;
+    address[] public acceptedTokens;
 
+    mapping(address => bool) public isOwner;
     mapping(address => uint256) public equities; // percentage of equity
 
     struct NFT {
@@ -41,7 +42,7 @@ contract Identity is IERC721Receiver {
     }
 
     NFT[] public nfts;
-    address[] public acceptedTokens;
+
 
     constructor(address[] memory _owners, uint256[] memory _equities) {
         owners = _owners;
