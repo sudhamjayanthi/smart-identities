@@ -8,7 +8,7 @@ import { useAccount, useContractWrite, useContractEvent } from "wagmi";
 
 import Modal from "@components/Modal"
 import IdentityFactoryABI from "@/utils/IdentityFactory.json";
-import { FACTORY_ADDRESS } from "@/lib/constants";
+import { EXPLORER, FACTORY_ADDRESS } from "@/lib/constants";
 
 const Create = () => {
     const router = useRouter();
