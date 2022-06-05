@@ -67,7 +67,7 @@ function NFTs({ isOwner, identityConfig }) {
         <div className="flex flex-col gap-5">
             <h2 className="subheading">NFTs</h2>
             <div className="flex gap-10">
-                {nfts?.map(nft => <NFT nftData={nft} />)}
+                {nfts ? nfts?.map(nft => <NFT nftData={nft} />) : "No nfts found"}
             </div>
             {isOwner && <Modal title="Transfer NFT" toggleText="send another" toggleStyle="btn from-orange-500 to-yellow-500">
                 <form onSubmit={handleSubmit(onSubmit)}>

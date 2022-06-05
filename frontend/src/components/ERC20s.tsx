@@ -2,33 +2,35 @@ import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
-import { erc20ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
+import { erc20ABI, useContractRead, useContractWrite, useSigner, useToken } from "wagmi";
 import Modal from "./Modal";
+import Token from "./Token";
 
 function NFTs({ isOwner, identityConfig }) {
+
     const { data: signer } = useSigner()
     const { data: acceptedTokens } = useContractRead(identityConfig, "getAcceptedTokens")
     const { data: acceptErc20Tx, write: acceptErc20 } = useContractWrite(identityConfig, "acceptErc20");
 
-    const { register, handleSubmit, watch, formState: { errors }, setError, clearErrors } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+
     const addTxn = useAddRecentTransaction();
 
     const onSubmit = async (data) => {
-        if (acceptedTokens.includes(data.address)) alert("already accepted this token")
+        if (acceptedTokens.includes(data.address)) {
+            alert("already accepted this token");
+            return  
+        }
 
         try {
             const contract = new ethers.Contract(data.address, erc20ABI, signer)
-            const bal  = await contract.balanceOf(identityConfig.addressOrName) // validates if the given address is a erc20 contract
+            const bal = await contract.balanceOf(identityConfig.addressOrName) // validates if the given address is a erc20 contract
             console.log(bal)
+            acceptErc20({ args: [data.address] })
         } catch (e) {
             console.log(e)
             setError("address", { type: "custom", message: "not a valid erc20 contract" })
         }
-
-        acceptErc20({ args: [data.address] })
-    }
-
-    const getBalance = (address) => {
 
     }
 
@@ -43,7 +45,9 @@ function NFTs({ isOwner, identityConfig }) {
     return (
         <div className="flex flex-col gap-5">
             <h2 className="subheading">Accepted ERC20s</h2>
-            {acceptedTokens?.map(acceptedToken => <span className="mr-1 p-2 rounded bg-gray-900 bg-opacity-10">{acceptedToken}</span>)}
+            <div>
+                {acceptedTokens?.map(token => <Token address={token} identity={identityConfig.addressOrName} />)}
+            </div>
             {isOwner &&
                 <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,8 +60,8 @@ function NFTs({ isOwner, identityConfig }) {
                                 className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
                                 {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
                             />
-                            {errors.address && <span className="text-red-400">Please enter a valid address</span>}
-                            Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens.
+                            {errors.address && <span className="text-red-400">Please enter a valid ERC20 contract address</span>}
+                            <p>Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens. Make sure it is a right ERC20 contract adddress or <b>you risk locking up all your funds.</b></p>
                             <button type="submit" className="btn bg-blue-600">Confirm</button>
                         </div>
                     </form>
