@@ -1,0 +1,8 @@
+type Owner @entity {
+	id: ID!
+	address: String! # address of the owner
+	identities: [String!] # identities owned by the owner
+}
+
+
+
