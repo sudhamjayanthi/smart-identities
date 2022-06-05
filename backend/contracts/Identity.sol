@@ -12,7 +12,6 @@ interface IERC721Receiver {
 
 interface IERC20 {
     function transfer(address _to, uint256 _value) external;
-
     function balanceOf(address _owner) external view returns (uint256 balance);
 }
 

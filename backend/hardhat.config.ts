@@ -14,6 +14,10 @@ const config: HardhatUserConfig = {
       url: "https://matic-mumbai.chainstacklabs.com",
       accounts: [process.env.PRIVATE_KEY as string],
     },
+    koptimism: {
+      url: "https://kovan.optimism.io/",
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
   },
   etherscan: {
     apiKey: {
