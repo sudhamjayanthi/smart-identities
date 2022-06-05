@@ -21,10 +21,11 @@ const Dashboard = () => {
 
     const QUERY = `
     {
-            owners(where: {address: "0xecf76cc823fd31c1e473cfd3d2ca04dd2f338fe3"}) {
+            owners(where: {address: ${user.address}}) {
                 identities
             }
     }`;
+
 
     const { data, isLoading, error } = useQuery("identities", () => {
         return request(endpoint, QUERY);
