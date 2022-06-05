@@ -1,3 +1,4 @@
+import { EXPLORER } from "@/lib/constants";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
@@ -19,7 +20,7 @@ function NFTs({ isOwner, identityConfig }) {
     const onSubmit = async (data) => {
         if (acceptedTokens.includes(data.address)) {
             alert("already accepted this token");
-            return  
+            return
         }
 
         try {
@@ -35,18 +36,20 @@ function NFTs({ isOwner, identityConfig }) {
     }
 
     useEffect(() => {
-        console.log(`adding erc20 to accepted token, txn : https://mumbai.polygonscan.com/tx/${acceptErc20Tx?.hash}`)
-        if (acceptErc20Tx?.hash) addTxn({
-            hash: acceptErc20Tx?.hash,
-            description: 'adding erc20 to accepted token',
-        })
+        if (acceptErc20Tx?.hash) {
+            console.log(`adding erc20 to accepted token, txn : ${EXPLORER}/tx/${acceptErc20Tx?.hash}`)
+            addTxn({
+                hash: acceptErc20Tx?.hash,
+                description: 'adding erc20 to accepted token',
+            })
+        }
     }, [acceptErc20Tx])
 
     return (
         <div className="flex flex-col gap-5">
             <h2 className="subheading">Accepted ERC20s</h2>
             <div>
-                {acceptedTokens?.map(token => <Token address={token} identity={identityConfig.addressOrName} />)}
+                {acceptedTokens?.map(token => <Token key={token} address={token} identity={identityConfig.addressOrName} />)}
             </div>
             {isOwner &&
                 <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">

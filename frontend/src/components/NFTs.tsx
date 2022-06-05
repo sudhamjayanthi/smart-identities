@@ -1,3 +1,4 @@
+import { EXPLORER } from "@/lib/constants";
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
@@ -20,7 +21,7 @@ function NFTs({ isOwner, identityConfig }) {
     const { data: nfts } = useContractRead(identityConfig, "getNfts")
     const { data: transferNFTTx, write: transferNFT } = useContractWrite(identityConfig, "transferNFT");
 
-    const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
     const onSubmit = async (data: nft) => {
         try {
@@ -53,13 +54,13 @@ function NFTs({ isOwner, identityConfig }) {
     }
 
     useEffect(() => {
-        console.log(`transferring nft, txn : https://mumbai.polygonscan.com/tx/${transferNFTTx?.hash}`)
-
-        if (transferNFTTx?.hash) addTxn({
-            hash: transferNFTTx?.hash,
-            description: 'transferring nft to identity',
-        })
-
+        if (transferNFTTx?.hash) {
+            console.log(`transferring nft, txn : ${EXPLORER}/tx/${transferNFTTx?.hash}`)
+            addTxn({
+                hash: transferNFTTx?.hash,
+                description: 'transferring nft to identity',
+            })
+        }
     }, [transferNFTTx])
 
 
@@ -67,7 +68,7 @@ function NFTs({ isOwner, identityConfig }) {
         <div className="flex flex-col gap-5">
             <h2 className="subheading">NFTs</h2>
             <div className="flex gap-10">
-                {nfts ? nfts?.map(nft => <NFT nftData={nft} />) : "No nfts found"}
+                {nfts ? nfts?.map((nft, idx) => <NFT key={idx} nftData={nft} />) : "No nfts found"}
             </div>
             {isOwner && <Modal title="Transfer NFT" toggleText="send another" toggleStyle="btn from-orange-500 to-yellow-500">
                 <form onSubmit={handleSubmit(onSubmit)}>

@@ -19,7 +19,7 @@ const Modal = ({ title = "Default Modal Title", toggleStyle, toggleText, childre
                     onClick={openModal}
                     className={toggleStyle}
                 >
-                  {toggleText}
+                    {toggleText}
                 </button>
             </div>
 
@@ -56,21 +56,6 @@ const Modal = ({ title = "Default Modal Title", toggleStyle, toggleText, childre
                                         {title}
                                     </Dialog.Title>
                                     {children}
-                                    {/* <div className="mt-2">
-                                        <p className="text-sm text-gray-500">
-                                           All the erc20 and native tokens from your identity will be transferred to all the owners according to their equities.
-                                        </p>
-                                    </div>
-
-                                    <div className="mt-4">
-                                        <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                            onClick={() => { }}
-                                        >
-                                            Got it, thanks!
-                                        </button>
-                                    </div> */}
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

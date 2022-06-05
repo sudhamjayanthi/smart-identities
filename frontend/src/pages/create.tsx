@@ -37,7 +37,7 @@ const Create = () => {
 
     useEffect(() => {
         if (txData?.hash) {
-            console.log(`creating identity, txn : https://mumbai.polygonscan.com/tx/${txData?.hash}`)
+            console.log(`creating identity, txn : ${EXPLORER}/tx/${txData?.hash}`)
             addTxn({
                 hash: txData?.hash,
                 description: 'created identity',

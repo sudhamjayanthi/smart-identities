@@ -27,7 +27,7 @@ const Identity = () => {
     return (
         <div className="flex flex-1">
             <div className="w-1/6 flex flex-col justify-start items-center p-10 pt-20">
-                <span style={{ backgroundColor: color }} className="text-4xl p-4 rounded-full">{emoji}</span>
+                <span style={{ backgroundColor: color }} className="text-4xl grid place-content-center select-none h-20 w-20 rounded-full">{emoji}</span>
                 <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
             </div>
             <div className="flex flex-col flex-1 p-10 pt-20 gap-10">
@@ -36,7 +36,7 @@ const Identity = () => {
                 </h1>
                 <div>
                     <h2 className="subheading mb-5">Owners</h2>
-                    <div className="w-[60%] flex rounded overflow-hidden">
+                    <div className="w-[65%] flex rounded overflow-hidden shadow-[9px_9px_45px_-17px_rgba(0,0,0,0.75)]">
                         {owners?.map((address, idx) => {
                             return <Owner address={address} key={idx} idx={idx} identityConfig={identityConfig} />
                         })}

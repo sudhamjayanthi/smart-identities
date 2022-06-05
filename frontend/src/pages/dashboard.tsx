@@ -19,13 +19,11 @@ const Dashboard = () => {
 
     const [identities, setIdentities] = useState([]);
 
-    const QUERY = `
-    {
-            owners(where: {address: ${user.address}}) {
-                identities
-            }
+    const QUERY = `{
+        owners(where : {address : "${user?.address.toLowerCase()}"}) {
+            identities
+        }
     }`;
-
 
     const { data, isLoading, error } = useQuery("identities", () => {
         return request(endpoint, QUERY);
@@ -35,7 +33,8 @@ const Dashboard = () => {
         if (data?.owners[0]) setIdentities(data.owners[0].identities)
         if (isLoading) console.log("loading identities...")
         if (error) console.log(error)
-    }, [data])
+    }, [data, user])
+
 
     useEffect(() => {
         if (!user?.address) {
