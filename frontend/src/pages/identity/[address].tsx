@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { useAccount, useBalance, useContractRead } from "wagmi";
-import { avatarFromAddress } from "../../utils/avatarFromAddress"
 import Owner from "@components/Owner";
-import ERC20s from "@components/ERC20s";
+import ERC20s from "@/components/ERC20s";
 import NFTs from "@components/NFTs";
 import QuickActions from "@components/QuickActions";
 
 import IdentityABI from "@/utils/Identity.json"
+
+import avatarFromAddress from "@/utils/avatarFromAddress"
 import copyToClipboard from "@/utils/copyToClipboard";
 
 const Identity = () => {

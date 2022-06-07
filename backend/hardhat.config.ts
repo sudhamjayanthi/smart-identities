@@ -22,6 +22,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       polygonMumbai: process.env.POLYSCAN as string,
+      optimisticKovan: process.env.OPTIMISM_ETHERSCAN as string,
     },
   },
 };

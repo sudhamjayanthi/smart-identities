@@ -1,10 +1,10 @@
 {
-  "name": "web3-identities",
+  "name": "smart-identities-backend",
   "version": "1.0.0",
-  "description": "",
+  "private" : true,
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test"
+    "test": "echo 'no tests setup'"
   },
   "author": "Sudham Jayanthi",
   "license": "ISC",

@@ -1,11 +1,15 @@
-import { EXPLORER } from "@/lib/constants";
-import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
-import { useEffect, useState } from 'react'
+
+import { useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import { erc20ABI, useContractRead, useContractWrite, useSigner, useToken } from "wagmi";
+
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+import { erc20ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
+
 import Modal from "./Modal";
-import Token from "./Token";
+import ERC20 from "./ERC20";
+
+import { EXPLORER } from "@/lib/constants";
 
 function NFTs({ isOwner, identityConfig }) {
 
@@ -49,7 +53,7 @@ function NFTs({ isOwner, identityConfig }) {
         <div className="flex flex-col gap-5">
             <h2 className="subheading">Accepted ERC20s</h2>
             <div>
-                {acceptedTokens?.map(token => <Token key={token} address={token} identity={identityConfig.addressOrName} />)}
+                {acceptedTokens?.map(token => <ERC20 key={token} address={token} identity={identityConfig.addressOrName} />)}
             </div>
             {isOwner &&
                 <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">
