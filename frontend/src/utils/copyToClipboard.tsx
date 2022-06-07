@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 const copyToClipboard = (value: string) => {
     const element = document.createElement("textarea")
     element.value = value
@@ -8,7 +10,7 @@ const copyToClipboard = (value: string) => {
     element.select()
     document.execCommand("copy")
     document.body.removeChild(element)
-    alert("copied")
+    alert("copied to clipboard")
 }
 
 export default copyToClipboard

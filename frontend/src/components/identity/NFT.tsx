@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
-import { erc721ABI, useContractRead } from "wagmi"
+import { erc721ABI, useBlockNumber, useContractRead } from "wagmi"
 
 const NFT = ({ nftData: [sentBy, collection, tokenId, sentAt] }) => {
     const [imageURL, setImageURL] = useState(null)
+    const { data : block } = useBlockNumber()
 
     const { data: tokenURI, isLoading } = useContractRead({
         addressOrName: collection,
         contractInterface: erc721ABI
     }, "tokenURI", { args: [tokenId] })
 
+    const since = block && block - sentAt
+    
     useEffect(() => {
         if (!isLoading) {
             if (tokenURI.includes("https://")) {
@@ -32,7 +35,12 @@ const NFT = ({ nftData: [sentBy, collection, tokenId, sentAt] }) => {
 
 
     return (
-        <img className="w-1/5" src={imageURL} onLoad={() => URL.revokeObjectURL(imageURL)} />
+        <div className="flex flex-col items-center gap-2">
+            <img className="w-60 rounded-lg" src={imageURL} onLoad={() => URL.revokeObjectURL(imageURL)} />
+            <span className="text-sm">
+                Since {since && since} blocks
+            </span>
+        </div>
     )
 
 }

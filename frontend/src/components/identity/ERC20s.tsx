@@ -10,6 +10,7 @@ import Modal from "@components/Modal";
 import ERC20 from "./ERC20";
 
 import { EXPLORER } from "@lib/constants";
+import toast, { Toaster } from "react-hot-toast";
 
 function NFTs({ isOwner, identityConfig }) {
 
@@ -51,6 +52,8 @@ function NFTs({ isOwner, identityConfig }) {
 
     return (
         <div className="flex flex-col gap-5">
+            {/* <Toaster position="bottom-right" /> */}
+
             <h2 className="subheading">Accepted ERC20s</h2>
             <div>
                 {acceptedTokens?.map(token => <ERC20 key={token} address={token} identity={identityConfig.addressOrName} />)}

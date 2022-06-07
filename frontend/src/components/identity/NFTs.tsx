@@ -8,7 +8,7 @@ import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import NFT from "./NFT";
 import Modal from "@components/Modal";
 import { EXPLORER } from "@lib/constants";
-import { watch } from "fs";
+import toast, { Toaster } from "react-hot-toast";
 
 interface nft {
     address: string,
@@ -88,7 +88,9 @@ function NFTs({ isOwner, identityConfig }) {
 
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-10">
+            {/* <Toaster position="bottom-right" /> */}
+
             <h2 className="subheading">NFTs</h2>
             <div className="flex gap-10">
                 {nfts ? nfts?.map((nft, idx) => <NFT key={idx} nftData={nft} />) : "No nfts found"}

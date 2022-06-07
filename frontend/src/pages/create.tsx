@@ -9,6 +9,7 @@ import { useAccount, useContractWrite, useContractEvent } from "wagmi";
 import Modal from "@components/Modal"
 import IdentityFactoryABI from "@/utils/IdentityFactory.json";
 import { EXPLORER, FACTORY_ADDRESS } from "@/lib/constants";
+import toast, { Toaster } from "react-hot-toast";
 
 const Create = () => {
     const router = useRouter();
@@ -97,6 +98,7 @@ const Create = () => {
 
     return (
         <div className="flex flex-col flex-1 justify-center items-center gap-10">
+            {/* <Toaster position="bottom-right" /> */}
             <div className="flex justify-between gap-20 w-1/2">
                 <h2 className="text-3xl font-extrabold text-blue-600">Owners</h2>
                 <Modal title="Add Owner" toggleText="+ add" toggleStyle="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
@@ -129,7 +131,6 @@ const Create = () => {
                         return (
                             <>
                                 <tr key={idx} >
-                                    {/* <tr key={idx} > */}
                                     <td className="p-2 border text-center border-slate-300">{owner.address}</td>
                                     <td className="p-2 border text-center border-slate-300">{owner.equity} %</td>
                                     <td className="p-2 border text-center border-slate-300 text-red-500 underline cursor-pointer" onClick={() => {

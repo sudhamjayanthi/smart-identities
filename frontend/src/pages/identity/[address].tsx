@@ -10,6 +10,7 @@ import IdentityABI from "@utils/Identity.json"
 import avatarFromAddress from "@utils/avatarFromAddress"
 import copyToClipboard from "@utils/copyToClipboard";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 const Identity = () => {
     const router = useRouter();
@@ -35,15 +36,15 @@ const Identity = () => {
                 const code = await provider.getCode(identityAddress)
                 setDestructed(code === "0x")
             } catch (e) {
-                
+
             }
         }
 
         checkContract()
     }, [identityAddress])
-
     return (
         <div className="flex flex-1">
+            {/* <Toaster position="bottom-right" /> */}
             <div className="w-1/6 flex flex-col justify-start items-center p-10 pt-20">
                 {/* avatar */}
                 <span style={{ backgroundColor: color }} className="text-4xl grid place-content-center select-none h-20 w-20 rounded-full">{emoji}</span>
@@ -56,7 +57,7 @@ const Identity = () => {
                 <h1 className="text-2xl font-black cursor-pointer" onClick={() => copyToClipboard(identityAddress)}>
                     {identityAddress ? identityAddress : "Loading..."}
                 </h1>
-                {destructed ? "Identity has been destructed" : <>
+                {destructed ? "This identity has been destructed" : <>
                     <Owners identityConfig={identityConfig} owners={owners} />
                     <NFTs identityConfig={identityConfig} isOwner={isOwner} />
                     <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
