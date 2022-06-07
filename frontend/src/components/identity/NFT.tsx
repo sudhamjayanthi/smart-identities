@@ -11,13 +11,22 @@ const NFT = ({ nftData: [sentBy, collection, tokenId, sentAt] }) => {
 
     useEffect(() => {
         if (!isLoading) {
-            const json = atob(tokenURI.toString().substring(29));
-            const metadata = JSON.parse(json);
-            const svg = atob(metadata.image.substring(26));
-            const blob = new Blob([svg], { type: 'image/svg+xml' });
-            const url = URL.createObjectURL(blob);
-            setImageURL(url)
-            console.log(url)
+            if (tokenURI.includes("https://")) {
+                fetch(tokenURI.toString()).then(res => res.json()).then(data => setImageURL(data.image))
+            } else {
+                try {
+                    const json = atob(tokenURI.toString().substring(29));
+                    const metadata = JSON.parse(json);
+                    const svg = atob(metadata.image.substring(26));
+                    const blob = new Blob([svg], { type: 'image/svg+xml' });
+                    const url = URL.createObjectURL(blob);
+                    setImageURL(url)
+                    console.log(url)
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+
         }
     }, [tokenURI])
 

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useAccount, useBalance, useContractRead } from "wagmi";
+import { useAccount, useBalance, useContractRead, useProvider } from "wagmi";
 
 import Owners from "@components/identity/Owners";
 import NFTs from "@components/identity/NFTs";
@@ -9,12 +9,16 @@ import QuickActions from "@components/identity/QuickActions";
 import IdentityABI from "@utils/Identity.json"
 import avatarFromAddress from "@utils/avatarFromAddress"
 import copyToClipboard from "@utils/copyToClipboard";
+import { useEffect, useState } from "react";
 
 const Identity = () => {
-    const { data } = useAccount();
     const router = useRouter();
+    const { data } = useAccount();
+    const provider = useProvider();
     const identityAddress = router.query.address as string;
     const { color, emoji } = avatarFromAddress(identityAddress);
+
+    const [destructed, setDestructed] = useState(false);
 
     const { data: bal } = useBalance({
         addressOrName: identityAddress,
@@ -24,6 +28,19 @@ const Identity = () => {
 
     const { data: owners } = useContractRead(identityConfig, "getOwners")
     const { data: isOwner } = useContractRead(identityConfig, "isOwner", { args: [data?.address] });
+
+    useEffect(() => {
+        const checkContract = async () => {
+            try {
+                const code = await provider.getCode(identityAddress)
+                setDestructed(code === "0x")
+            } catch (e) {
+                
+            }
+        }
+
+        checkContract()
+    }, [identityAddress])
 
     return (
         <div className="flex flex-1">
@@ -39,10 +56,13 @@ const Identity = () => {
                 <h1 className="text-2xl font-black cursor-pointer" onClick={() => copyToClipboard(identityAddress)}>
                     {identityAddress ? identityAddress : "Loading..."}
                 </h1>
-                <Owners identityConfig={identityConfig} owners={owners} />
-                <NFTs identityConfig={identityConfig} isOwner={isOwner} />
-                <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
-                <QuickActions identityConfig={identityConfig} isOwner={isOwner} />
+                {destructed ? "Identity has been destructed" : <>
+                    <Owners identityConfig={identityConfig} owners={owners} />
+                    <NFTs identityConfig={identityConfig} isOwner={isOwner} />
+                    <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
+                    <QuickActions identityConfig={identityConfig} isOwner={isOwner} />
+                </>
+                }
             </div>
         </div>
 

@@ -8,6 +8,7 @@ import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import NFT from "./NFT";
 import Modal from "@components/Modal";
 import { EXPLORER } from "@lib/constants";
+import { watch } from "fs";
 
 interface nft {
     address: string,
@@ -23,9 +24,10 @@ function NFTs({ isOwner, identityConfig }) {
     const { data: nfts } = useContractRead(identityConfig, "getNfts")
     const { data: transferNFTTx, write: transferNFT } = useContractWrite(identityConfig, "transferNFT");
 
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError, watch } = useForm();
 
     const onSubmit = async (data: nft) => {
+        console.log(data)
         try {
             const nftContract = new ethers.Contract(data.address, erc721ABI, signer)
             const ownerAccount: string = await nftContract.ownerOf(data.tokenId)
@@ -36,23 +38,42 @@ function NFTs({ isOwner, identityConfig }) {
             const identityIsOwner = ownerAccount.toLowerCase() === identityAddress.toLowerCase();
             setApproved(identityIsApproved);
 
+
             if (!identityIsOwner) {
                 if (!identityIsApproved) {
                     const txn = await nftContract.approve(identityAddress, data.tokenId)
                     console.log(txn.hash)
-                } else {
-                    // used else coz we don't want both transactions to pop up at the same time confusing the user
-                    transferNFT({
-                        args: [data.address, data.tokenId]
-                    })
+
+                    const approvedAccount: string = await nftContract.getApproved(data.tokenId)
+                    const identityIsApproved = approvedAccount.toLowerCase() === identityAddress.toLowerCase();
+                    setApproved(identityIsApproved);
+
                 }
             } else {
-                alert("already transferred the nft to identity")
+                alert("already transferred nft to the identity")
             }
+
         } catch (e) {
             console.log(e)
             setError("address", { type: "custom", message: "not a valid nft contract" })
         }
+    }
+
+    const onChange = async (e) => {
+        try {
+            const address = watch("address")
+            const tokenId = watch("tokenId")
+
+            const nftContract = new ethers.Contract(address.toString(), erc721ABI, signer)
+            const approvedAccount: string = await nftContract.getApproved(tokenId.toString())
+            const identityIsApproved = approvedAccount.toLowerCase() === identityConfig.addressOrName.toLowerCase();
+
+            setApproved(identityIsApproved)
+        } catch (e) {
+            console.log("error occured in onChange")
+        }
+
+
     }
 
     useEffect(() => {
@@ -73,7 +94,7 @@ function NFTs({ isOwner, identityConfig }) {
                 {nfts ? nfts?.map((nft, idx) => <NFT key={idx} nftData={nft} />) : "No nfts found"}
             </div>
             {isOwner && <Modal title="Transfer NFT" toggleText="send another" toggleStyle="btn from-orange-500 to-yellow-500">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onChange={onChange} onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-3 mt-4">
                         <label htmlFor="address">Collection Address</label>
                         <input
@@ -95,7 +116,13 @@ function NFTs({ isOwner, identityConfig }) {
                         />
                         {errors.tokenId && <span className="text-red-400">Please enter a valid token id</span>}
 
-                        {approved ? <button type="submit" className="btn bg-orange-600" >Transfer</button> : (
+                        {approved ? <button onClick={() => {
+                            if (approved) {
+                                transferNFT({
+                                    args: [watch("address"), watch("tokenId")]
+                                })
+                            }
+                        }} className="btn bg-orange-600" >Transfer</button> : (
                             <>
                                 <button type="submit" className="btn bg-blue-600">Approve</button>
                                 <button className="btn bg-orange-600 cursor-not-allowed" disabled>Transfer</button>
