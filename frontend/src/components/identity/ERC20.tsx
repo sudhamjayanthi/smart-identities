@@ -1,7 +1,8 @@
-import { EXPLORER } from "@/lib/constants"
 import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 import { erc20ABI, useSigner, useToken } from "wagmi"
+
+import { EXPLORER } from "@lib/constants"
 
 const Token = ({ address, identity }) => {
     const { data: signer } = useSigner()

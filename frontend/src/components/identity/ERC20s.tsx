@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { erc20ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
 
-import Modal from "./Modal";
+import Modal from "@components/Modal";
 import ERC20 from "./ERC20";
 
-import { EXPLORER } from "@/lib/constants";
+import { EXPLORER } from "@lib/constants";
 
 function NFTs({ isOwner, identityConfig }) {
 

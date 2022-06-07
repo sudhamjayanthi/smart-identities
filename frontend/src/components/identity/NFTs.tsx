@@ -1,11 +1,13 @@
-import { EXPLORER } from "@/lib/constants";
-import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
-import { useForm } from "react-hook-form";
 import { erc721ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
-import Modal from "./Modal";
+
+import { useForm } from "react-hook-form";
+import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
+
 import NFT from "./NFT";
+import Modal from "@components/Modal";
+import { EXPLORER } from "@lib/constants";
 
 interface nft {
     address: string,

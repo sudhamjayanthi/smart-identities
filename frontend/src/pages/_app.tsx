@@ -1,13 +1,14 @@
 import Nav from "@components/Nav";
-import { CHAIN } from "@/lib/constants";
+import { CHAIN } from "@lib/constants";
 
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
+
 import '@rainbow-me/rainbowkit/styles.css'
+import { getDefaultWallets, RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 
 import { publicProvider } from 'wagmi/providers/public';
 import { createClient, WagmiConfig, configureChains } from 'wagmi'
-import { getDefaultWallets, RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 
 import { QueryClient, QueryClientProvider } from "react-query";
 

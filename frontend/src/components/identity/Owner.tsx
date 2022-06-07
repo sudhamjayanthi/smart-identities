@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi"
-import { EXPLORER } from "@/lib/constants";
+import { EXPLORER } from "@lib/constants";
 
 const colors = ["#f7d6e0", "#c3f1fa", "#e5f4e3", "#edf6f9"]
 

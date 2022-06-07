@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-const Modal = ({ title = "Default Modal Title", toggleStyle, toggleText, children }) => {
+const Modal = ({ title, toggleStyle, toggleText, children }) => {
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {

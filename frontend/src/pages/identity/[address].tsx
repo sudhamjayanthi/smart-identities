@@ -1,15 +1,14 @@
 import { useRouter } from "next/router";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 
-import Owners from "@components/Owners";
-import NFTs from "@components/NFTs";
-import ERC20s from "@components/ERC20s";
-import QuickActions from "@components/QuickActions";
+import Owners from "@components/identity/Owners";
+import NFTs from "@components/identity/NFTs";
+import ERC20s from "@components/identity/ERC20s";
+import QuickActions from "@components/identity/QuickActions";
 
-import IdentityABI from "@/utils/Identity.json"
-
-import avatarFromAddress from "@/utils/avatarFromAddress"
-import copyToClipboard from "@/utils/copyToClipboard";
+import IdentityABI from "@utils/Identity.json"
+import avatarFromAddress from "@utils/avatarFromAddress"
+import copyToClipboard from "@utils/copyToClipboard";
 
 const Identity = () => {
     const { data } = useAccount();
@@ -34,7 +33,7 @@ const Identity = () => {
                 {/* balance */}
                 <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
             </div>
-            
+
             {/* identity details */}
             <div className="flex flex-col flex-1 p-10 pt-20 gap-10">
                 <h1 className="text-2xl font-black cursor-pointer" onClick={() => copyToClipboard(identityAddress)}>

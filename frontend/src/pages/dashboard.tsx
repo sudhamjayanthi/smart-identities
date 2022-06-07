@@ -1,14 +1,14 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react";
-
 import { useAccount, useBalance } from "wagmi";
-import { avatarFromAddress } from "@/utils/avatarFromAddress";
 
-import { request } from "graphql-request";
+import avatarFromAddress from "@utils/avatarFromAddress";
+
 import { useQuery } from "react-query";
+import { request } from "graphql-request";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 
 const endpoint = "https://api.thegraph.com/subgraphs/name/sudhamjayanthi/identities";

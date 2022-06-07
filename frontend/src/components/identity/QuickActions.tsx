@@ -1,8 +1,9 @@
-import { EXPLORER } from "@/lib/constants";
-import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { useContractWrite } from "wagmi";
-import Modal from "./Modal";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+
+import Modal from "@components/Modal";
+import { EXPLORER } from "@lib/constants";
 
 const QuickActions = ({ isOwner, identityConfig }) => {
     const addTxn = useAddRecentTransaction();
