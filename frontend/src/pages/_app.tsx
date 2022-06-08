@@ -11,6 +11,8 @@ import { publicProvider } from 'wagmi/providers/public';
 import { createClient, WagmiConfig, configureChains } from 'wagmi'
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 const { chains, provider } = configureChains(
 	[CHAIN],
@@ -22,6 +24,12 @@ const wagmiClient = createClient({ autoConnect: true, connectors, provider })
 const apolloClient = new QueryClient();
 
 const App = ({ Component, pageProps }) => {
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+	
 	return (
 		<QueryClientProvider client={apolloClient}>
 			<WagmiConfig client={wagmiClient}>
@@ -29,7 +37,8 @@ const App = ({ Component, pageProps }) => {
 					lightMode: lightTheme(),
 					darkMode: darkTheme(),
 				}} chains={chains}>
-					<div className="min-h-screen bg-white flex flex-col overflow-hidden font-[inter]">
+					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden font-[inter]">
+						{mounted ? <Toaster /> : null}
 						<Nav />
 						<Component {...pageProps} />
 					</div>

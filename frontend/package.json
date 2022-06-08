@@ -24,6 +24,7 @@
 		"react-hook-form": "^7.31.3",
 		"react-hot-toast": "^2.2.0",
 		"react-query": "^3.39.1",
+		"react-select-search": "^3.0.9",
 		"tailwindcss": "^3.0.24",
 		"wagmi": "^0.4.2"
 	},

@@ -6,11 +6,13 @@ import NFTs from "@components/identity/NFTs";
 import ERC20s from "@components/identity/ERC20s";
 import QuickActions from "@components/identity/QuickActions";
 
+import SendNFT from "@components/identity/SendNFT";
+
 import IdentityABI from "@utils/Identity.json"
 import avatarFromAddress from "@utils/avatarFromAddress"
 import copyToClipboard from "@utils/copyToClipboard";
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import SendERC20 from "@/components/identity/SendERC20";
 
 const Identity = () => {
     const router = useRouter();
@@ -44,12 +46,13 @@ const Identity = () => {
     }, [identityAddress])
     return (
         <div className="flex flex-1">
-            {/* <Toaster position="bottom-right" /> */}
-            <div className="w-1/6 flex flex-col justify-start items-center p-10 pt-20">
+            <div className="w-1/6 flex flex-col justify-start items-center gap-5 p-10 pt-20">
                 {/* avatar */}
                 <span style={{ backgroundColor: color }} className="text-4xl grid place-content-center select-none h-20 w-20 rounded-full">{emoji}</span>
                 {/* balance */}
                 <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
+                <SendNFT identityConfig={identityConfig} />
+                <SendERC20 identityConfig={identityConfig} />
             </div>
 
             {/* identity details */}
@@ -59,7 +62,7 @@ const Identity = () => {
                 </h1>
                 {destructed ? "This identity has been destructed" : <>
                     <Owners identityConfig={identityConfig} owners={owners} />
-                    <NFTs identityConfig={identityConfig} isOwner={isOwner} />
+                    <NFTs identityConfig={identityConfig} />
                     <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
                     <QuickActions identityConfig={identityConfig} isOwner={isOwner} />
                 </>

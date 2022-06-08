@@ -10,7 +10,7 @@ const copyToClipboard = (value: string) => {
     element.select()
     document.execCommand("copy")
     document.body.removeChild(element)
-    alert("copied to clipboard")
+    toast.success("copied to clipboard")
 }
 
 export default copyToClipboard

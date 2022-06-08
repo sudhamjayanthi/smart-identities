@@ -10,7 +10,7 @@ import Modal from "@components/Modal";
 import ERC20 from "./ERC20";
 
 import { EXPLORER } from "@lib/constants";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function NFTs({ isOwner, identityConfig }) {
 
@@ -24,7 +24,7 @@ function NFTs({ isOwner, identityConfig }) {
 
     const onSubmit = async (data) => {
         if (acceptedTokens.includes(data.address)) {
-            alert("already accepted this token");
+            toast.error("already accepted this token");
             return
         }
 
@@ -52,7 +52,6 @@ function NFTs({ isOwner, identityConfig }) {
 
     return (
         <div className="flex flex-col gap-5">
-            {/* <Toaster position="bottom-right" /> */}
 
             <h2 className="subheading">Accepted ERC20s</h2>
             <div>
