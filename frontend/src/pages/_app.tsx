@@ -29,7 +29,7 @@ const App = ({ Component, pageProps }) => {
 	useEffect(() => {
 		setMounted(true)
 	}, [])
-	
+
 	return (
 		<QueryClientProvider client={apolloClient}>
 			<WagmiConfig client={wagmiClient}>
@@ -37,7 +37,7 @@ const App = ({ Component, pageProps }) => {
 					lightMode: lightTheme(),
 					darkMode: darkTheme(),
 				}} chains={chains}>
-					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden font-[inter]">
+					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden">
 						{mounted ? <Toaster /> : null}
 						<Nav />
 						<Component {...pageProps} />

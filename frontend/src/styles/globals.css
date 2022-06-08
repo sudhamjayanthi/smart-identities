@@ -1,32 +1,37 @@
+* {
+  font-family: Inter, Helvetica, sans-serif;
+}
+
 .subheading {
-	@apply font-bold text-lg text-gray-600;
+  @apply font-bold text-lg text-gray-600;
 }
 
 .btn {
-	@apply bg-gradient-to-r text-white py-2 px-4 rounded-lg;
+  @apply bg-gradient-to-r text-white py-2 px-4 rounded-lg;
 }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 20px;
+  width: 6px;
+  height: 20px;
 }
 
 ::-webkit-scrollbar-track {
-	@apply bg-gray-200;
+  background: transparent;
+  margin: 10px auto;
 }
 
 ::-webkit-scrollbar-thumb {
-	@apply bg-sky-300 rounded-full;
+  @apply bg-gray-300 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	@apply bg-blue-400 rounded-full;
+  @apply bg-gray-400;
 }
 
 /* Hide arrows for number input */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }

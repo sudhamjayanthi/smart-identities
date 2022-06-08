@@ -6,13 +6,15 @@ import NFTs from "@components/identity/NFTs";
 import ERC20s from "@components/identity/ERC20s";
 import QuickActions from "@components/identity/QuickActions";
 
+import Modal from "@components/Modal";
 import SendNFT from "@components/identity/SendNFT";
+import SendERC20 from "@components/identity/SendERC20";
 
 import IdentityABI from "@utils/Identity.json"
 import avatarFromAddress from "@utils/avatarFromAddress"
 import copyToClipboard from "@utils/copyToClipboard";
 import { useEffect, useState } from "react";
-import SendERC20 from "@/components/identity/SendERC20";
+
 
 const Identity = () => {
     const router = useRouter();
@@ -52,7 +54,9 @@ const Identity = () => {
                 {/* balance */}
                 <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
                 <SendNFT identityConfig={identityConfig} />
-                <SendERC20 identityConfig={identityConfig} />
+                <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn from-blue-700 to-sky-400 ">
+                    <SendERC20 />
+                </Modal>
             </div>
 
             {/* identity details */}
