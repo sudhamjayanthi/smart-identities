@@ -3,9 +3,10 @@ import { CHAIN } from "@lib/constants";
 
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
+import merge from 'lodash.merge';
 
 import '@rainbow-me/rainbowkit/styles.css'
-import { getDefaultWallets, RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
+import { getDefaultWallets, RainbowKitProvider, darkTheme, lightTheme, Theme } from '@rainbow-me/rainbowkit'
 
 import { publicProvider } from 'wagmi/providers/public';
 import { createClient, WagmiConfig, configureChains } from 'wagmi'
@@ -23,6 +24,19 @@ const { connectors } = getDefaultWallets({ appName: "Identities", chains })
 const wagmiClient = createClient({ autoConnect: true, connectors, provider })
 const apolloClient = new QueryClient();
 
+const mydarkTheme = merge(darkTheme(), {
+	fonts: {
+		body : "inter"
+	},
+} as Theme);
+
+const mylightTheme = merge(lightTheme(), {
+	fonts: {
+		body: "inter"
+	},
+} as Theme);
+
+
 const App = ({ Component, pageProps }) => {
 	const [mounted, setMounted] = useState(false);
 
@@ -34,8 +48,8 @@ const App = ({ Component, pageProps }) => {
 		<QueryClientProvider client={apolloClient}>
 			<WagmiConfig client={wagmiClient}>
 				<RainbowKitProvider showRecentTransactions={true} theme={{
-					lightMode: lightTheme(),
-					darkMode: darkTheme(),
+					lightMode: mylightTheme,
+					darkMode: mydarkTheme,
 				}} chains={chains}>
 					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden">
 						{mounted ? <Toaster /> : null}
