@@ -9,7 +9,9 @@ import { useAccount, useContractWrite, useContractEvent } from "wagmi";
 import Modal from "@components/Modal"
 import IdentityFactoryABI from "@/utils/IdentityFactory.json";
 import { EXPLORER, FACTORY_ADDRESS } from "@/lib/constants";
-import toast, { Toaster } from "react-hot-toast";
+
+import toast from "react-hot-toast";
+import { CheckCircleIcon } from "@heroicons/react/outline";
 
 const Create = () => {
     const router = useRouter();
@@ -55,9 +57,9 @@ const Create = () => {
     }, { once: true })
 
 
-    const deleteOwner = i => {
+    const deleteOwner = (index: number) => {
         const arr = [...owners]
-        arr.splice(i, 1)
+        arr.splice(index, 1)
         setOwners(arr)
     }
 
@@ -109,8 +111,8 @@ const Create = () => {
                         </div>
                         <div>
                             <label htmlFor="equity" className="text-gray-800 font-medium">Equity - </label>
-                            <span className="text-gray-600">{watch("equity") || 0}%</span><br />
-                            <input className="w-full" {...register("equity", { required: true, min: 5 })} type="range" min={0} max={100} step={5} defaultValue={watch("equity") || 5} />
+                            <span className="text-gray-600">{watch("equity") || 5}%</span><br />
+                            <input className="w-full " {...register("equity", { required: true, min: 5 })} type="range" min={0} max={100} step={5} defaultValue={5} />
                             {errors.equity && <span className="text-red-400">Minimum equity should be 5%</span>}
                         </div>
                         <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
@@ -142,9 +144,7 @@ const Create = () => {
                 </tbody>
             </table>
             <button onClick={createIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                </svg>Create Identity
+                <CheckCircleIcon className="w-6 h-6" />Deploy Identity
             </button>
         </div>
     )

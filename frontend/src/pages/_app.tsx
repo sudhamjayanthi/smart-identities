@@ -14,6 +14,7 @@ import { createClient, WagmiConfig, configureChains } from 'wagmi'
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 const { chains, provider } = configureChains(
 	[CHAIN],
@@ -26,7 +27,7 @@ const apolloClient = new QueryClient();
 
 const mydarkTheme = merge(darkTheme(), {
 	fonts: {
-		body : "inter"
+		body: "inter"
 	},
 } as Theme);
 
@@ -53,6 +54,15 @@ const App = ({ Component, pageProps }) => {
 				}} chains={chains}>
 					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden">
 						{mounted ? <Toaster /> : null}
+						<Head>
+							<title>Smart Identities</title>
+							<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+							<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+							<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+							<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+							<link rel="manifest" href="/site.webmanifest" />
+							
+						</Head>
 						<Nav />
 						<Component {...pageProps} />
 					</div>
