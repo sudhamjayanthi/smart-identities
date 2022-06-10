@@ -19,40 +19,38 @@ interface token {
 const SendERC20 = ({ to }) => {
 
     const [token, setToken] = useState<token>()
-    const [amount, setAmount] = useState<number>()
+    const [amount, setAmount] = useState<string>()
 
     const { data: signer } = useSigner()
     const addTxn = useAddRecentTransaction();
 
     const onSend = () => {
         const send = async () => {
-            if (token) {
+            if (token && amount) {
                 const contract = new ethers.Contract(token.address, erc20ABI, signer)
-                console.log("token : ", token.address)
                 try {
-                    const txn = await contract.transfer(to, amount)
+                    const txn = await contract.transfer(to, ethers.utils.parseUnits(amount, token.decimals))
                     addTxn({
                         hash: txn?.hash,
                         description: 'sending tokens to identity',
                     })
-                } catch {
-                    toast.error(`Make sure you have enough ${token.symbol}!`)
+                } catch (e) {
+                    console.log(e)
+                    toast.error(`Error occured. Make sure you have enough ${token.symbol}!`)
                 }
-            } else {
-                toast.error("Please select a token!")
-            }
+            } else toast.error("Invalid token or amount!")
         }
 
         send();
     }
 
     return (
-        <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn from-blue-700 to-sky-400 ">
+        <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn from-blue-700 to-sky-400">
             <div className="flex items-center my-4 border-2 rounded-lg p-2">
-                <input onChange={e => setAmount(parseInt(e.target.value))} className="flex-1 text-lg font-bold  outline-none px-2" placeholder="0.0" type="number" />
+                <input className="flex-1 text-lg font-bold  outline-none px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
                 <PickToken callback={(token: token) => setToken(token)} />
             </div>
-            <button onClick={onSend} className="btn bg-blue-600 w-full font-medium">Send</button>
+            <button className="btn bg-blue-600 w-full font-medium" onClick={onSend}>Send</button>
         </Modal>
     )
 }

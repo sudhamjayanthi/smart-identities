@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { useContractRead } from "wagmi";
 import NFT from "./NFT"
 

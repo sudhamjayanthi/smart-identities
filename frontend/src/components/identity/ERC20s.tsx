@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
@@ -11,31 +11,49 @@ import ERC20 from "./ERC20";
 
 import { EXPLORER } from "@lib/constants";
 import toast from "react-hot-toast";
+import PickToken from "./PickToken";
+
+interface token {
+    chainId: number,
+    name: string,
+    symbol: string,
+    decimals: number,
+    logoURI: string,
+    address: string,
+    id: number
+}
+
 
 function NFTs({ isOwner, identityConfig }) {
+    const [token, setToken] = useState<token>()
 
     const { data: signer } = useSigner()
     const { data: acceptedTokens } = useContractRead(identityConfig, "getAcceptedTokens")
     const { data: acceptErc20Tx, write: acceptErc20 } = useContractWrite(identityConfig, "acceptErc20");
 
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    // const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
     const addTxn = useAddRecentTransaction();
 
-    const onSubmit = async (data) => {
-        if (acceptedTokens.includes(data.address)) {
-            toast.error("already accepted this token");
+    const onSubmit = async () => {
+
+        if (!token) {
+            toast.error("Please select a token!")
+            return
+        }
+        if (acceptedTokens.includes(token.address)) {
+            toast.error("Already accepted this token");
             return
         }
 
         try {
-            const contract = new ethers.Contract(data.address, erc20ABI, signer)
+            const contract = new ethers.Contract(token.address, erc20ABI, signer)
             const bal = await contract.balanceOf(identityConfig.addressOrName) // validates if the given address is a erc20 contract
             console.log(bal)
-            acceptErc20({ args: [data.address] })
+            acceptErc20({ args: [token.address] })
         } catch (e) {
             console.log(e)
-            setError("address", { type: "custom", message: "not a valid erc20 contract" })
+            // setError("address", { type: "custom", message: "not a valid erc20 contract" })
         }
 
     }
@@ -59,21 +77,22 @@ function NFTs({ isOwner, identityConfig }) {
             </div>
             {isOwner &&
                 <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="flex flex-col gap-3 mt-4">
-                            <label htmlFor="address">Token Address</label>
+                    {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                    <div className="flex flex-col gap-3 mt-4">
+                        {/* <label htmlFor="address">Token Address</label>
                             <input
                                 type="text"
                                 name="address"
                                 id="address"
                                 className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
                                 {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
-                            />
-                            {errors.address && <span className="text-red-400">Please enter a valid ERC20 contract address</span>}
-                            <p>Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens. Make sure it is a right ERC20 contract adddress or <b>you risk locking up all your funds.</b></p>
-                            <button type="submit" className="btn bg-blue-600">Confirm</button>
-                        </div>
-                    </form>
+                            /> */}
+                        <PickToken callback={(token: token) => setToken(token)} />
+                        {/* {errors.address && <span className="text-red-400">Please enter a valid ERC20 contract address</span>} */}
+                        {/* <p>Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens. Make sure it is a right ERC20 contract adddress or <b>you risk locking up all your funds.</b></p> */}
+                        <button onClick={onSubmit} className="btn bg-blue-600">Confirm</button>
+                    </div>
+                    {/* </form> */}
                 </Modal>
             }
         </div>

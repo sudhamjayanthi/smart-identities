@@ -1,8 +1,8 @@
-import SendERC20 from "@components/identity/SendERC20"
+import PickToken from "@components/identity/PickToken"
 
 const Test = () => (
     <div className="w-1/4 m-auto">
-        <SendERC20 />
+        <PickToken  callback={(token) => {console.log("got token : ", token)}}/>
     </div>
 )
 
