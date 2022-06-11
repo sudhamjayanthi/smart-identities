@@ -1,9 +1,7 @@
 import tokens from "@lib/tokens";
-// import { EXPLORER } from "@lib/constants";
 
 import Fuse from "fuse.js";
 
-// import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { Fragment, useEffect, useState } from "react";
 import { Combobox } from '@headlessui/react'
 import { Dialog, Transition } from "@headlessui/react";
@@ -138,13 +136,10 @@ const SendERC20 = ({ callback }) => {
                                                             <img src={customToken.logoURI} className="w-8 h-8 rounded-full" />
                                                             <div className="flex flex-col">
                                                                 <span className="font-medium">{customToken.symbol}</span>
-                                                                {/* <span className="font-medium">{token.name}</span> */}
                                                                 <span className="text-sm text-gray-600">{customToken.name}</span>
-                                                                {/* <span className="text-sm text-gray-600">{token.address.slice(0, 33)}...</span> */}
                                                             </div>
                                                         </div>
                                                         <button className="p-1 px-3 mr-4 text-white bg-blue-600 rounded-full" onClick={() => { callback(customToken); setShowSearchModal(false) }}>use</button>
-                                                        {/* <a target="_blank" href={`${EXPLORER}/token/${token.address}`}><ExternalLinkIcon className="w-6 h-6 text-gray-300 ml-auto float-right" /></a> */}
                                                     </div> : <div className="text-center mt-4 text-gray-700">No tokens found.</div>}
 
                                                 </div>
@@ -155,11 +150,8 @@ const SendERC20 = ({ callback }) => {
                                                             <img src={token.logoURI} className="w-8 h-8 rounded-full" />
                                                             <div className="flex flex-col">
                                                                 <span className="font-medium">{token.symbol}</span>
-                                                                {/* <span className="font-medium">{token.name}</span> */}
                                                                 <span className="text-sm text-gray-600">{token.name}</span>
-                                                                {/* <span className="text-sm text-gray-600">{token.address.slice(0, 33)}...</span> */}
                                                             </div>
-                                                            {/* <a target="_blank" href={`${EXPLORER}/token/${token.address}`}><ExternalLinkIcon className="w-6 h-6 text-gray-300 ml-auto float-right" /></a> */}
                                                         </Combobox.Option>
                                                     </>
                                                 )

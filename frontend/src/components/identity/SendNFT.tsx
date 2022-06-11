@@ -25,15 +25,15 @@ const SendNFT = ({ identityConfig }) => {
     const [approved, setApproved] = useState(false)
     const [approveTxnHash, setApproveTxnHash] = useState()
 
-    const { data: approveTxn } = useWaitForTransaction({
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+
+    const { data: approveTxn, isLoading } = useWaitForTransaction({
         hash: approveTxnHash,
     });
-
-    const { register, handleSubmit, formState: { errors }, setError, watch } = useForm();
-
     const { data: transferTx, write: transferNFT } = useContractWrite(identityConfig, "transferNFT");
 
     const onSubmit = async (data: nft) => {
+        await updateApproved()
         if (approved) {
             transferNFT({
                 args: [watch("address"), watch("tokenId")]
@@ -60,11 +60,11 @@ const SendNFT = ({ identityConfig }) => {
 
     }
 
-    const onChange = async () => {
+    const updateApproved = async () => {
         const address = watch("address")
         const tokenId = watch("tokenId")
 
-        if (address.match(/^0x[0-9a-fA-F]{40}$/)) {
+        if (address?.match(/^0x[0-9a-fA-F]{40}$/)) {
             try {
                 const nftContract = new ethers.Contract(address.toString(), erc721ABI, signer)
                 const approvedAccount = await nftContract.getApproved(tokenId.toString())
@@ -74,8 +74,25 @@ const SendNFT = ({ identityConfig }) => {
                 console.log("not a erc20 address")
             }
         }
-
     }
+
+    const onChange = async () => {
+        await updateApproved()
+    }
+
+    useEffect(() => {
+        updateApproved()
+    }, [approveTxn, isLoading])
+
+    useEffect(() => {
+        if (approveTxnHash) {
+            console.log(`approving nft, txn : ${EXPLORER}/tx/${approveTxnHash}`)
+            addTxn({
+                hash: approveTxnHash,
+                description: 'approved nft to identity',
+            })
+        }
+    }, [approveTxnHash])
 
     useEffect(() => {
         if (transferTx?.hash) {
@@ -86,16 +103,6 @@ const SendNFT = ({ identityConfig }) => {
             })
         }
     }, [transferTx])
-
-    // useEffect(() => {
-    //     if (approveTxn) {
-    //         console.log(`transferring nft, txn : ${EXPLORER}/tx/${approveTxnHash}`)
-    //         addTxn({
-    //             hash: approveTxnHash,
-    //             description: 'transferring nft to identity',
-    //         })
-    //     }
-    // }, [approveTxn, approveTxnHash])
 
 
     return <>
@@ -122,19 +129,6 @@ const SendNFT = ({ identityConfig }) => {
                     />
                     {errors.tokenId && <span className="text-red-400">Please enter a token id</span>}
                     {approved ? <button type="submit" className="btn bg-orange-600" >Transfer</button> : <button type="submit" className="btn bg-blue-600">Approve</button>}
-
-                    {/* {approved ? <button onClick={() => {
-                        if (approved) {
-                            transferNFT({
-                                args: [watch("address"), watch("tokenId")]
-                            })
-                        }
-                    }} className="btn bg-orange-600" >Transfer</button> : (
-                        <>
-                            <button type="submit" className="btn bg-blue-600">Approve</button>
-                            <button className="btn bg-orange-600 cursor-not-allowed" disabled>Transfer</button>
-                        </>
-                    )} */}
                 </div>
             </form>
         </Modal>
