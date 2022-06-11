@@ -6,7 +6,7 @@ dataSources:
     name: IdentityFactory
     network: optimism-kovan
     source:
-      address: "0x3eB42604b82972477D36C8D4e4B026F37AeA70C1"
+      address: "0x3c5bbd585e82948472ac8eb470BAC64F74067293"
       abi: IdentityFactory
       startBlock: 3715010
     mapping:

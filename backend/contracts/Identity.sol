@@ -25,7 +25,6 @@ interface IERC721 {
     function getApproved(uint256 _tokenId) external returns (address owner);
 }
 
-// Extends ERC721 receiver contract
 contract Identity is IERC721Receiver {
     address[] public owners;
     address[] public acceptedTokens;
@@ -41,7 +40,6 @@ contract Identity is IERC721Receiver {
     }
 
     NFT[] public nfts;
-
 
     constructor(address[] memory _owners, uint256[] memory _equities) {
         owners = _owners;
@@ -68,10 +66,7 @@ contract Identity is IERC721Receiver {
         return acceptedTokens;
     }
 
-    function transferNFT(address nftCollection, uint256 tokenId)
-        external
-        onlyOwners
-    {
+    function transferNFT(address nftCollection, uint256 tokenId) public {
         // requires approval before this call
         require(
             IERC721(nftCollection).getApproved(tokenId) == address(this),
