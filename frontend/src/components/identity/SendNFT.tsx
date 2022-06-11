@@ -1,86 +1,101 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
-import { erc721ABI, useContractWrite, useSigner } from "wagmi";
+import { erc721ABI, useAccount, useContractWrite, useSigner, useWaitForTransaction } from "wagmi";
 
 import { useForm } from "react-hook-form";
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 
 import Modal from "@components/Modal";
 import { EXPLORER } from "@lib/constants";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 interface nft {
     address: string,
     tokenId: string
 }
 
-
 const SendNFT = ({ identityConfig }) => {
+    const { data: user } = useAccount()
     const { data: signer } = useSigner()
-    const [approved, setApproved] = useState(false)
+
     const addTxn = useAddRecentTransaction();
-    const { data: transferNFTTx, write: transferNFT } = useContractWrite(identityConfig, "transferNFT");
+
+    const identityAddress = identityConfig.addressOrName
+
+    const [approved, setApproved] = useState(false)
+    const [approveTxnHash, setApproveTxnHash] = useState()
+
+    const { data: approveTxn } = useWaitForTransaction({
+        hash: approveTxnHash,
+    });
+
     const { register, handleSubmit, formState: { errors }, setError, watch } = useForm();
 
+    const { data: transferTx, write: transferNFT } = useContractWrite(identityConfig, "transferNFT");
+
     const onSubmit = async (data: nft) => {
-        console.log(data)
-        try {
-            const nftContract = new ethers.Contract(data.address, erc721ABI, signer)
-            const ownerAccount: string = await nftContract.ownerOf(data.tokenId)
-            const approvedAccount: string = await nftContract.getApproved(data.tokenId)
-            const identityAddress: string = identityConfig.addressOrName
+        if (approved) {
+            transferNFT({
+                args: [watch("address"), watch("tokenId")]
+            })
+        } else {
+            try {
+                const nftContract = new ethers.Contract(data.address, erc721ABI, signer)
 
-            const identityIsApproved = approvedAccount.toLowerCase() === identityAddress.toLowerCase();
-            const identityIsOwner = ownerAccount.toLowerCase() === identityAddress.toLowerCase();
-            setApproved(identityIsApproved);
+                const owner = await nftContract.ownerOf(data.tokenId)
+                const userIsOwner = owner.toLowerCase() === user?.address.toLowerCase();
 
-
-            if (!identityIsOwner) {
-                if (!identityIsApproved) {
+                if (userIsOwner) {
                     const txn = await nftContract.approve(identityAddress, data.tokenId)
-                    console.log(txn.hash)
-
-                    const approvedAccount: string = await nftContract.getApproved(data.tokenId)
-                    const identityIsApproved = approvedAccount.toLowerCase() === identityAddress.toLowerCase();
-                    setApproved(identityIsApproved);
-
+                    setApproveTxnHash(txn.hash)
+                } else {
+                    toast.error("You don't own this nft!")
                 }
-            } else {
-                toast.error("already transferred nft to the identity")
-            }
 
-        } catch (e) {
-            console.log(e)
-            setError("address", { type: "custom", message: "not a valid nft contract" })
+            } catch (e) {
+                console.log(e)
+                toast.error("Incorrect collection address or token id!")
+            }
         }
+
     }
 
     const onChange = async () => {
-        try {
-            const address = watch("address")
-            const tokenId = watch("tokenId")
+        const address = watch("address")
+        const tokenId = watch("tokenId")
 
-            const nftContract = new ethers.Contract(address.toString(), erc721ABI, signer)
-            const approvedAccount: string = await nftContract.getApproved(tokenId.toString())
-            const identityIsApproved = approvedAccount.toLowerCase() === identityConfig.addressOrName.toLowerCase();
-
-            setApproved(identityIsApproved)
-        } catch (e) {
-            console.log("error occured in onChange")
+        if (address.match(/^0x[0-9a-fA-F]{40}$/)) {
+            try {
+                const nftContract = new ethers.Contract(address.toString(), erc721ABI, signer)
+                const approvedAccount = await nftContract.getApproved(tokenId.toString())
+                const identityIsApproved = approvedAccount.toLowerCase() === identityConfig.addressOrName.toLowerCase();
+                setApproved(identityIsApproved)
+            } catch (e) {
+                console.log("not a erc20 address")
+            }
         }
-
 
     }
 
     useEffect(() => {
-        if (transferNFTTx?.hash) {
-            console.log(`transferring nft, txn : ${EXPLORER}/tx/${transferNFTTx?.hash}`)
+        if (transferTx?.hash) {
+            console.log(`transferring nft, txn : ${EXPLORER}/tx/${transferTx?.hash}`)
             addTxn({
-                hash: transferNFTTx?.hash,
+                hash: transferTx?.hash,
                 description: 'transferring nft to identity',
             })
         }
-    }, [transferNFTTx])
+    }, [transferTx])
+
+    // useEffect(() => {
+    //     if (approveTxn) {
+    //         console.log(`transferring nft, txn : ${EXPLORER}/tx/${approveTxnHash}`)
+    //         addTxn({
+    //             hash: approveTxnHash,
+    //             description: 'transferring nft to identity',
+    //         })
+    //     }
+    // }, [approveTxn, approveTxnHash])
 
 
     return <>
@@ -95,7 +110,7 @@ const SendNFT = ({ identityConfig }) => {
                         className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
                         {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
                     />
-                    {errors.address && <span className="text-red-400">Please enter a valid collection address</span>}
+                    {errors.address && <span className="text-red-400">Please enter a valid address</span>}
 
                     <label htmlFor="tokenId">Token ID</label>
                     <input
@@ -105,9 +120,10 @@ const SendNFT = ({ identityConfig }) => {
                         className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
                         {...register("tokenId")}
                     />
-                    {errors.tokenId && <span className="text-red-400">Please enter a valid token id</span>}
+                    {errors.tokenId && <span className="text-red-400">Please enter a token id</span>}
+                    {approved ? <button type="submit" className="btn bg-orange-600" >Transfer</button> : <button type="submit" className="btn bg-blue-600">Approve</button>}
 
-                    {approved ? <button onClick={() => {
+                    {/* {approved ? <button onClick={() => {
                         if (approved) {
                             transferNFT({
                                 args: [watch("address"), watch("tokenId")]
@@ -118,7 +134,7 @@ const SendNFT = ({ identityConfig }) => {
                             <button type="submit" className="btn bg-blue-600">Approve</button>
                             <button className="btn bg-orange-600 cursor-not-allowed" disabled>Transfer</button>
                         </>
-                    )}
+                    )} */}
                 </div>
             </form>
         </Modal>

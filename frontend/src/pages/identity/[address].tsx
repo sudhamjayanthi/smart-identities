@@ -15,8 +15,6 @@ import copyToClipboard from "@utils/copyToClipboard";
 import { useEffect, useState } from "react";
 
 
-
-
 const Identity = () => {
     const { data } = useAccount();
     const provider = useProvider();
@@ -52,8 +50,10 @@ const Identity = () => {
             <div className="w-1/6 flex flex-col justify-start items-center gap-5 p-10 pt-20">
                 {/* avatar */} <span style={{ backgroundColor: color }} className="text-4xl grid place-content-center select-none h-20 w-20 rounded-full">{emoji}</span>
                 {/* balance */} <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
-                <SendNFT identityConfig={identityConfig} />
-                <SendERC20 to={identityConfig.addressOrName} />
+                {!destructed && <>
+                    <SendNFT identityConfig={identityConfig} />
+                    <SendERC20 to={identityConfig.addressOrName} />
+                </>}
             </div>
 
             {/* identity details */}
@@ -69,7 +69,7 @@ const Identity = () => {
                 </>
                 }
             </div>
-        </div>
+        </div >
 
     )
 }
