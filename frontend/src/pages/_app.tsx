@@ -62,6 +62,8 @@ const App = ({ Component, pageProps }) => {
 							<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 							<link rel="manifest" href="/site.webmanifest" />
 							
+							<script async src="https://cdn.splitbee.io/sb.js"></script>
+							
 						</Head>
 						<Nav />
 						<Component {...pageProps} />
