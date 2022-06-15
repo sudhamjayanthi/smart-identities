@@ -69,8 +69,7 @@ const Identity = () => {
                 </>
                 }
             </div>
-        </div >
-
+        </div>
     )
 }
 

@@ -32,14 +32,14 @@ const QuickActions = ({ isOwner, identityConfig }) => {
     }, [disintegrateTx])
 
     return (<div className="shadow-lg border border-slate-200 p-5 rounded-lg w-[60%] -ml-5">
-        <h2 className="subheading">quick actions</h2>
+        <h2 className="subheading">Quick Actions</h2>
         <div className="flex gap-4 mt-4">
             {isOwner && <Modal title="Withdraw all the native and ERC20 tokens" toggleText="💰 cashout" toggleStyle="btn bg-green-600">
                 <div className="flex flex-col gap-4 mt-4">
                     <p>
-                        Clicking confirm will open a transaction prompt to transfer all the available native and ERC20 tokens to all owners according to their equities.
+                        Clicking confirm will transfer all tokens to the owners according to their equities.
                         <br /><br />
-                        <b> Note : Make sure you have added accepted tokens you want to withdraw before continuing!</b>
+                        <b> Note : Make sure you have accepted tokens you want to withdraw before continuing!</b>
                     </p>
                     <button onClick={() => {
                         withdraw();
@@ -49,7 +49,9 @@ const QuickActions = ({ isOwner, identityConfig }) => {
             {isOwner && <Modal title="ARE YOU SURE?" toggleText="🗑️ cashout and destruct identity" toggleStyle="btn bg-red-600">
                 <div className="flex flex-col gap-4 mt-4">
                     <span>
-                        CLICKING CONFIRM WILL WITHDRAW ALL NATIVE AND ACCEPTED ERC20 TOKENS AND <b>DESTROY THE ENTIRE IDENTITY FOREVER.</b>
+                        Clicking confirm will withdraw all tokens and <b>destroy the identity forever.</b> 
+                        <br /><br />
+                        <span> Note : Make sure you have accepted tokens you want to withdraw or <b>your funds will forever be locked!</b></span>
                     </span>
                     <button onClick={() => {
                         disintegrate();

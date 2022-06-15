@@ -99,10 +99,11 @@ const Create = () => {
     }
 
     return (
-        <div className="flex flex-col flex-1 justify-center items-center gap-10">
+        <div className="flex flex-col flex-1  items-center gap-10">
+            <h1 className="text-4xl font-bold my-20">Create Identity</h1>
             <div className="flex justify-between gap-20 w-1/2">
-                <h2 className="text-3xl font-extrabold text-blue-600">Owners</h2>
-                <Modal title="Add Owner" toggleText="+ add" toggleStyle="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
+                <h2 className="text-3xl font-semibold text-blue-500">Owners</h2>
+                <Modal title="Add Owner" toggleText="+ add owner" toggleStyle="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
                     <form className="space-y-6 mt-2" onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label htmlFor="address" className="text-gray-800 font-medium">Address</label>
@@ -143,7 +144,7 @@ const Create = () => {
                     })}
                 </tbody>
             </table>
-            <button onClick={createIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
+            <button onClick={createIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 my-8">
                 <CheckCircleIcon className="w-6 h-6" />Deploy Identity
             </button>
         </div>

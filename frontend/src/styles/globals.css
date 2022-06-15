@@ -1,5 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
 
+::selection {
+  color: blackgray;
+  background: rgb(212, 244, 255);
+}
+
 * {
   font-family: Inter, Helvetica, sans-serif;
 }
@@ -9,7 +14,7 @@
 }
 
 .btn {
-  @apply bg-gradient-to-r text-white py-2 px-4 rounded-lg;
+  @apply text-white py-2 px-4 rounded-lg;
 }
 
 /* Scrollbar Styling */

@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 
 import { useEffect, useState } from 'react'
-import { useForm } from "react-hook-form";
 
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { erc20ABI, useContractRead, useContractWrite, useSigner } from "wagmi";
@@ -31,7 +30,6 @@ function NFTs({ isOwner, identityConfig }) {
     const { data: acceptedTokens } = useContractRead(identityConfig, "getAcceptedTokens")
     const { data: acceptErc20Tx, write: acceptErc20 } = useContractWrite(identityConfig, "acceptErc20");
 
-    // const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
     const addTxn = useAddRecentTransaction();
 
@@ -53,7 +51,6 @@ function NFTs({ isOwner, identityConfig }) {
             acceptErc20({ args: [token.address] })
         } catch (e) {
             console.log(e)
-            // setError("address", { type: "custom", message: "not a valid erc20 contract" })
         }
 
     }
@@ -73,26 +70,14 @@ function NFTs({ isOwner, identityConfig }) {
 
             <h2 className="subheading">Accepted ERC20s</h2>
             <div>
-                {acceptedTokens?.map(token => <ERC20 key={token} address={token} identity={identityConfig.addressOrName} />)}
+                {acceptedTokens?.length !== 0 ? acceptedTokens?.map(token => <ERC20 key={token} address={token} identity={identityConfig.addressOrName} />) : <span className="text-gray-400">No tokens accepted. Accept tokens to see their balances here!</span>}
             </div>
             {isOwner &&
-                <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn from-blue-700 to-sky-400 ">
-                    {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+                <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn bg-gradient-to-r from-blue-700 to-sky-400 ">
                     <div className="flex flex-col gap-3 mt-4">
-                        {/* <label htmlFor="address">Token Address</label>
-                            <input
-                                type="text"
-                                name="address"
-                                id="address"
-                                className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
-                                {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
-                            /> */}
                         <PickToken callback={(token: token) => setToken(token)} />
-                        {/* {errors.address && <span className="text-red-400">Please enter a valid ERC20 contract address</span>} */}
-                        {/* <p>Clicking on confirm will open up a transaction prompt to add the token to the list of accepted tokens. Make sure it is a right ERC20 contract adddress or <b>you risk locking up all your funds.</b></p> */}
                         <button onClick={onSubmit} className="btn bg-blue-600">Confirm</button>
                     </div>
-                    {/* </form> */}
                 </Modal>
             }
         </div>

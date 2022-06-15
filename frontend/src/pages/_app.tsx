@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
+import Script from "next/script";
 
 const { chains, provider } = configureChains(
 	[CHAIN],
@@ -42,7 +43,7 @@ const App = ({ Component, pageProps }) => {
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
-		setMounted(true)
+		if (typeof window !== undefined) setMounted(true)
 	}, [])
 
 	return (
@@ -52,7 +53,7 @@ const App = ({ Component, pageProps }) => {
 					lightMode: mylightTheme,
 					darkMode: mydarkTheme,
 				}} chains={chains}>
-					<div className="min-h-screen bg-gray-100 bg-opacity-10 flex flex-col overflow-hidden">
+					<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 bg-opacity-10 flex flex-col overflow-hidden">
 						{mounted ? <Toaster /> : null}
 						<Head>
 							<title>Smart Identities</title>
@@ -62,8 +63,7 @@ const App = ({ Component, pageProps }) => {
 							<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 							<link rel="manifest" href="/site.webmanifest" />
 							
-							<script async src="https://cdn.splitbee.io/sb.js"></script>
-							
+							<Script async src="https://cdn.splitbee.io/sb.js"></Script>		
 						</Head>
 						<Nav />
 						<Component {...pageProps} />
@@ -71,7 +71,6 @@ const App = ({ Component, pageProps }) => {
 				</RainbowKitProvider>
 			</WagmiConfig>
 		</QueryClientProvider>
-
 	)
 }
 

@@ -80,10 +80,10 @@ const SendERC20 = ({ callback }) => {
     }, [search])
 
     return (
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center">
             <button
                 onClick={() => setShowSearchModal(true)}
-                className={`flex items-center font-medium py-2 px-3 rounded-lg ${token ? "bg-slate-100 drop-shadow-xl" : " bg-blue-600 text-white whitespace-nowrap"}`}
+                className={`flex items-center font-medium py-2 px-3 rounded-lg w-max justify-around ${token ? "bg-slate-100 drop-shadow-xl" : " bg-blue-600 text-white whitespace-nowrap"}`}
             >
                 {token ? <div className="cursor-pointer flex items-center gap-2 my-2 text-black font-medium">
                     <img src={token.logoURI} className="w-5 h-5 rounded-full" />

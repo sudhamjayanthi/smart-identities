@@ -45,7 +45,7 @@ const SendERC20 = ({ to }) => {
     }
 
     return (
-        <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn from-blue-700 to-sky-400">
+        <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn bg-gradient-to-r from-blue-700 to-sky-400">
             <div className="flex items-center my-4 border-2 rounded-lg p-2">
                 <input className="flex-1 text-lg font-bold  outline-none px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
                 <PickToken callback={(token: token) => setToken(token)} />

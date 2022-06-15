@@ -106,7 +106,7 @@ const SendNFT = ({ identityConfig }) => {
 
 
     return <>
-        <Modal title="Transfer NFT" toggleText="send nft" toggleStyle="btn from-orange-500 to-yellow-500">
+        <Modal title="Transfer NFT" toggleText="send nft" toggleStyle="btn bg-gradient-to-r from-orange-500 to-yellow-500">
             <form onChange={onChange} onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-3 mt-4">
                     <label htmlFor="address">Collection Address</label>
