@@ -1,17 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-interface IERC721Receiver {
-    function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenId,
-        bytes calldata data
-    ) external returns (bytes4);
-}
-
 interface IERC20 {
     function transfer(address _to, uint256 _value) external;
+
     function balanceOf(address _owner) external view returns (uint256 balance);
 }
 
@@ -21,16 +13,25 @@ interface IERC721 {
         address _to,
         uint256 _tokenId
     ) external;
-
-    function getApproved(uint256 _tokenId) external returns (address owner);
 }
 
+interface IERC721Receiver {
+    function onERC721Received(
+        address _operator,
+        address _from,
+        uint256 _tokenId,
+        bytes calldata _data
+    ) external returns (bytes4);
+}
+
+/// @title Identity
+/// @author Sudham Jayanthi
 contract Identity is IERC721Receiver {
     address[] public owners;
-    address[] public acceptedTokens;
-
+    mapping(address => uint256) public equities; // percentage of equity as a integer (1-100)
     mapping(address => bool) public isOwner;
-    mapping(address => uint256) public equities; // percentage of equity
+
+    address[] public acceptedTokens;
 
     struct NFT {
         address sentBy; // original owner of the nft
@@ -43,15 +44,23 @@ contract Identity is IERC721Receiver {
 
     constructor(address[] memory _owners, uint256[] memory _equities) {
         owners = _owners;
-        for (uint256 i = 0; i < _owners.length; i++) {
+        for (uint256 i = 0; i < _owners.length; ) {
             isOwner[_owners[i]] = true;
             equities[_owners[i]] = _equities[i];
+
+            unchecked {
+                ++i;
+            }
         }
     }
 
-    modifier onlyOwners() {
-        require(isOwner[msg.sender] == true, "not a owner");
-        _;
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes memory
+    ) public virtual override returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 
     function getOwners() external view returns (address[] memory) {
@@ -67,19 +76,12 @@ contract Identity is IERC721Receiver {
     }
 
     function transferNFT(address nftCollection, uint256 tokenId) public {
-        // requires approval before this call
-        require(
-            IERC721(nftCollection).getApproved(tokenId) == address(this),
-            "contract not approved"
-        );
-
         IERC721(nftCollection).safeTransferFrom(
-            msg.sender, // from
-            address(this), // to
+            msg.sender,
+            address(this),
             tokenId
         );
 
-        // save transferred nft data for the record
         NFT memory nft = NFT(msg.sender, nftCollection, tokenId, block.number);
         nfts.push(nft);
     }
@@ -110,13 +112,18 @@ contract Identity is IERC721Receiver {
         acceptedTokens.push(token);
     }
 
+    // @notice  Withdraws native and erc20 tokens according to the equities of owners
     function withdraw() public onlyOwners {
-        // withdraws NATIVE TOKEN and ERC20 tokens balance according to the equities
+        uint256 _etherBal = address(this).balance;
 
-        uint256 etherBal = address(this).balance;
+        for (uint256 i = 0; i < owners.length; ) {
+            payable(owners[i]).transfer(
+                (_etherBal * equities[owners[i]]) / 100
+            );
 
-        for (uint256 i = 0; i < owners.length; i++) {
-            payable(owners[i]).transfer((etherBal * equities[owners[i]]) / 100);
+            unchecked {
+                ++i;
+            }
         }
 
         for (uint256 j = 0; j < acceptedTokens.length; j++) {
@@ -135,26 +142,24 @@ contract Identity is IERC721Receiver {
 
     function disintegrate() public onlyOwners {
         withdraw();
-        for (uint256 i = 0; i < nfts.length; i++) {
+        for (uint256 i = 0; i < nfts.length; ) {
             IERC721(nfts[i].collection).safeTransferFrom(
                 address(this),
                 nfts[i].sentBy,
                 nfts[i].tokenId
             );
+
+            unchecked {
+                ++i;
+            }
         }
         selfdestruct(payable(msg.sender));
     }
 
-    receive() external payable {
-        // receive ether
-    }
+    receive() external payable {}
 
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes memory
-    ) public virtual override returns (bytes4) {
-        return this.onERC721Received.selector;
+    modifier onlyOwners() {
+        require(isOwner[msg.sender], "not a owner");
+        _;
     }
 }
