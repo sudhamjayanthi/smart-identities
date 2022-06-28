@@ -4,7 +4,7 @@
   "private" : true,
   "main": "index.js",
   "scripts": {
-    "test": "echo 'no tests setup'"
+    "test": "npx hardhat test"
   },
   "author": "Sudham Jayanthi",
   "license": "ISC",
