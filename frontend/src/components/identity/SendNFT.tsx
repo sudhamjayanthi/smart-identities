@@ -106,7 +106,7 @@ const SendNFT = ({ identityConfig }) => {
 
 
     return <>
-        <Modal title="Transfer NFT" toggleText="send nft" toggleStyle="btn bg-gradient-to-r from-orange-500 to-yellow-500">
+        <Modal title="Send ERC721" toggleText="ERC721" toggleStyle="btn bg-blue-500">
             <form onChange={onChange} onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-3 mt-4">
                     <label htmlFor="address">Collection Address</label>
@@ -114,7 +114,8 @@ const SendNFT = ({ identityConfig }) => {
                         type="text"
                         name="address"
                         id="address"
-                        className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
+                        placeholder="0x..."
+                        className="outline-none border-2 px-3 py-2 rounded-md "
                         {...register("address", { pattern: /^0x[a-fA-F0-9]{40}$/, required: true })}
                     />
                     {errors.address && <span className="text-red-400">Please enter a valid address</span>}
@@ -124,7 +125,8 @@ const SendNFT = ({ identityConfig }) => {
                         type="number"
                         name="tokenId"
                         id="tokenId"
-                        className="outline-none border-slate-300 border-2 p-1 rounded-md focus:border-blue-300"
+                        placeholder="0123"
+                        className="outline-none border-2 px-3 py-2 rounded-md "
                         {...register("tokenId")}
                     />
                     {errors.tokenId && <span className="text-red-400">Please enter a token id</span>}

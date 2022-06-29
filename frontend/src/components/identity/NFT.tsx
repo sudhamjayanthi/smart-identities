@@ -39,9 +39,10 @@ const NFT = ({ nftData: [sentBy, collection, tokenId, sentAt] }) => {
             <a href={`${EXPLORER + "/token/" + collection + "?a=" + tokenId}`}>
                 <img className="w-60 rounded-lg" src={imageURL} onLoad={() => URL.revokeObjectURL(imageURL)} />
             </a>
-            <span className="text-sm">
+            {/* gotta make this into a tooltip */}
+            {/* <span className="text-sm">
                 Since {since && since} blocks
-            </span>
+            </span> */}
         </div>
     )
 

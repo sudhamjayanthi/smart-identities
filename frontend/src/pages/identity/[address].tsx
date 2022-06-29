@@ -6,8 +6,9 @@ import NFTs from "@components/identity/NFTs";
 import ERC20s from "@components/identity/ERC20s";
 import QuickActions from "@components/identity/QuickActions";
 
-import SendNFT from "@components/identity/SendNFT";
+import SendETH from "@components/identity/SendETH";
 import SendERC20 from "@components/identity/SendERC20";
+import SendNFT from "@components/identity/SendNFT";
 
 import IdentityABI from "@utils/Identity.json"
 import avatarFromAddress from "@utils/avatarFromAddress"
@@ -46,25 +47,37 @@ const Identity = () => {
     }, [identityAddress])
 
     return (
-        <div className="flex flex-1">
-            <div className="w-1/6 flex flex-col justify-start items-center gap-5 p-10 pt-20">
-                {/* avatar */} <span style={{ backgroundColor: color }} className="text-4xl grid place-content-center select-none h-20 w-20 rounded-full">{emoji}</span>
-                {/* balance */} <span className="text-xl mt-4 font-bold">{bal?.formatted} {bal?.symbol}</span>
-                {!destructed && <>
-                    <SendNFT identityConfig={identityConfig} />
-                    <SendERC20 to={identityConfig.addressOrName} />
-                </>}
+        <div className="flex flex-col flex-1 items-center">
+            <div className="w-min bg-white bg-opacity-30 backdrop-blur-md rounded-2xl mt-10 flex justify-around items-center gap-10 py-12 px-20">
+                <div>
+                    <span style={{ backgroundColor: color }} className="fixed w-32 h-32 blur-2xl rounded-full -z-10"></span>
+                    <span style={{ backgroundColor: color }} className="text-[72px] grid place-content-center select-none h-32 w-32 rounded-full">{emoji}</span>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <h1 className="text-2xl font-black cursor-pointer mb-2" onClick={() => copyToClipboard(identityAddress)}>
+                        {identityAddress ? identityAddress : "Loading..."}
+                    </h1>
+                    <div>
+                        <span className="mr-14 text-gray-300 font-medium">balance</span>
+                        <span className="text-xl mt-4 text-gray-200 font-semibold">{bal?.formatted} {bal?.symbol}</span>
+                    </div>
+                    {!destructed && <>
+                        <div className="flex items-end gap-2">
+                            <span className="mr-4 text-gray-300 font-medium">send tokens</span>
+                            <SendETH to={identityConfig.addressOrName} />
+                            <SendERC20 to={identityConfig.addressOrName} />
+                            <SendNFT identityConfig={identityConfig} />
+                        </div>
+                    </>}
+                </div>
             </div>
 
             {/* identity details */}
-            <div className="flex flex-col flex-1 p-10 pt-20 gap-10">
-                <h1 className="text-2xl font-black cursor-pointer" onClick={() => copyToClipboard(identityAddress)}>
-                    {identityAddress ? identityAddress : "Loading..."}
-                </h1>
+            <div className="flex flex-col flex-1 p-10 pt-20 gap-14 w-[60%]">
                 {destructed ? "This identity has been destructed" : <>
                     <Owners identityConfig={identityConfig} owners={owners} />
-                    <NFTs identityConfig={identityConfig} />
                     <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
+                    <NFTs identityConfig={identityConfig} />
                     <QuickActions identityConfig={identityConfig} isOwner={isOwner} />
                 </>
                 }

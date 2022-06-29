@@ -99,11 +99,11 @@ const Create = () => {
     }
 
     return (
-        <div className="flex flex-col flex-1  items-center gap-10">
+        <div className="flex flex-col flex-1 items-center gap-10">
             <h1 className="text-4xl font-bold my-20">Create Identity</h1>
             <div className="flex justify-between gap-20 w-1/2">
-                <h2 className="text-3xl font-semibold text-blue-500">Owners</h2>
-                <Modal title="Add Owner" toggleText="+ add owner" toggleStyle="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2">
+                <h2 className="text-3xl font-semibold text-gray-200">Owners</h2>
+                <Modal title="Add Owner" toggleText="+" toggleStyle="bg-green-600 text-3xl text-white font-extralight px-3 py-1 rounded-lg">
                     <form className="space-y-6 mt-2" onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label htmlFor="address" className="text-gray-800 font-medium">Address</label>
@@ -144,8 +144,9 @@ const Create = () => {
                     })}
                 </tbody>
             </table>
-            <button onClick={createIdentity} className="bg-green-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 my-8">
-                <CheckCircleIcon className="w-6 h-6" />Deploy Identity
+            <button onClick={createIdentity} className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 my-8">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none" stroke="#f8f8f8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M14.25 8.75c-.5 2.5-2.385 4.854-5.03 5.38A6.25 6.25 0 0 1 3.373 3.798C5.187 1.8 8.25 1.25 10.75 2.25" /><path d="m5.75 7.75l2.5 2.5l6-6.5" /></g></svg>
+DEPLOY
             </button>
         </div>
     )

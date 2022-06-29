@@ -31,38 +31,45 @@ const QuickActions = ({ isOwner, identityConfig }) => {
         }
     }, [disintegrateTx])
 
-    return (<div className="shadow-lg border border-slate-200 p-5 rounded-lg w-[60%] -ml-5">
-        <h2 className="subheading">Quick Actions</h2>
-        <div className="flex gap-4 mt-4">
-            {isOwner && <Modal title="Withdraw all the native and ERC20 tokens" toggleText="💰 cashout" toggleStyle="btn bg-green-600">
-                <div className="flex flex-col gap-4 mt-4">
-                    <p>
-                        Clicking confirm will transfer all tokens to the owners according to their equities.
-                        <br /><br />
-                        <b> Note : Make sure you have accepted tokens you want to withdraw before continuing!</b>
-                    </p>
-                    <button onClick={() => {
-                        withdraw();
-                    }} className="btn bg-blue-600 font-medium block">Confirm</button>
-                </div>
-            </Modal>}
-            {isOwner && <Modal title="ARE YOU SURE?" toggleText="🗑️ cashout and destruct identity" toggleStyle="btn bg-red-600">
-                <div className="flex flex-col gap-4 mt-4">
-                    <span>
-                        Clicking confirm will withdraw all tokens and <b>destroy the identity forever.</b> 
-                        <br /><br />
-                        <span> Note : Make sure you have accepted tokens you want to withdraw or <b>your funds will forever be locked!</b></span>
-                    </span>
-                    <button onClick={() => {
-                        disintegrate();
-                    }} className="btn bg-red-600 font-medium block">Confirm</button>
-                </div>
-            </Modal>}
-
-            <a target="_blank" href={`${EXPLORER}/address/${identityConfig.addressOrName}`} className="btn bg-blue-600">🔍 view on explorer</a>
-
-        </div>
-    </div>)
+    return (
+        <div>
+            <h2 className="subheading">Owner Actions</h2>
+            <div className="flex gap-4 mt-4">
+                {/* {isOwner &&
+                <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn bg-gradient-to-r from-blue-700 to-sky-400 ">
+                    <div className="flex flex-col gap-3 mt-4">
+                        <PickToken callback={(token: token) => setToken(token)} />
+                        <button onClick={onSubmit} className="btn bg-blue-600">Confirm</button>
+                    </div>
+                </Modal>
+            } */}
+                {isOwner && <Modal title="Withdraw all the native and ERC20 tokens" toggleText="CASHOUT" toggleStyle="btn bg-green-600">
+                    <div className="flex flex-col gap-4 mt-4">
+                        <p>
+                            Clicking confirm will transfer all tokens to the owners according to their equities.
+                            <br /><br />
+                            <b> Note : Make sure you have accepted tokens you want to withdraw before continuing!</b>
+                        </p>
+                        <button onClick={() => {
+                            withdraw();
+                        }} className="btn bg-blue-600 font-medium block">Confirm</button>
+                    </div>
+                </Modal>}
+                {isOwner && <Modal title="ARE YOU SURE?" toggleText="DIS-INTEGRATE" toggleStyle="btn bg-red-600">
+                    <div className="flex flex-col gap-4 mt-4">
+                        <span>
+                            Clicking confirm will withdraw all tokens and <b>destroy the identity forever.</b>
+                            <br /><br />
+                            <span> Note : Make sure you have accepted tokens you want to withdraw or <b>your funds will forever be locked!</b></span>
+                        </span>
+                        <button onClick={() => {
+                            disintegrate();
+                        }} className="btn bg-red-600 font-medium block">Confirm</button>
+                    </div>
+                </Modal>}
+                {/* <a target="_blank" href={`${EXPLORER}/address/${identityConfig.addressOrName}`} className="btn bg-blue-600">🔍 view on explorer</a> */}
+            </div>
+        </div>)
 }
 
 export default QuickActions;

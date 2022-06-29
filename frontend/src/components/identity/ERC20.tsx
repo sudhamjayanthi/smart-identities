@@ -30,8 +30,8 @@ const Token = ({ address, identity }) => {
 
     return (
         <>
-            {token?.symbol && <a href={`${EXPLORER}/token/${token?.address}`} className="mr-2 py-2 px-3 rounded-md bg-sky-300 bg-opacity-50">
-                {token?.symbol} {balance && `(bal : ${balance / 10 ** token?.decimals})`}
+            {token?.symbol && <a href={`${EXPLORER}/token/${token?.address}`} className="mr-2 py-2 px-5 rounded-md border-[1px] border-gray-600">
+                {balance && balance / 10 ** token?.decimals} {token?.symbol}
             </a>}
         </>
     )

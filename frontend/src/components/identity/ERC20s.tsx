@@ -66,20 +66,19 @@ function NFTs({ isOwner, identityConfig }) {
     }, [acceptErc20Tx])
 
     return (
-        <div className="flex flex-col gap-5">
-
-            <h2 className="subheading">Accepted ERC20s</h2>
+        <div className="flex flex-col">
+            <h2 className="subheading">ERC20s</h2>
             <div>
                 {acceptedTokens?.length !== 0 ? acceptedTokens?.map(token => <ERC20 key={token} address={token} identity={identityConfig.addressOrName} />) : <span className="text-gray-400">No tokens accepted. Accept tokens to see their balances here!</span>}
             </div>
-            {isOwner &&
+            {/* {isOwner &&
                 <Modal title="Accept ERC20" toggleText="accept another" toggleStyle="btn bg-gradient-to-r from-blue-700 to-sky-400 ">
                     <div className="flex flex-col gap-3 mt-4">
                         <PickToken callback={(token: token) => setToken(token)} />
                         <button onClick={onSubmit} className="btn bg-blue-600">Confirm</button>
                     </div>
                 </Modal>
-            }
+            } */}
         </div>
     )
 }

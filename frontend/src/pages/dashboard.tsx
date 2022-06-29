@@ -45,10 +45,10 @@ const Dashboard = () => {
             <div className="flex flex-col flex-1 justify-center items-center gap-10">
                 {/* <Image className="rounded" src="https://c.tenor.com/6qtajk7mWzgAAAAM/funny-dance.gif" width="250" height="200" alt="crying cat" /> */}
                 <h1 className="font-bold text-4xl">No identities found</h1>
-                <p className="text-gray-600 w-[35%] text-center">Identities are smart contracts that can be owned by multiple addresses to act together as single identity in this anon web3 world ✨</p>
+                <p className="text-gray-400 w-[35%] text-center">Identities are smart contracts that can be owned by multiple addresses to act together as single identity in this anon web3 world ✨</p>
                 <Link href={"/create"}>
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                        <PlusIcon className="w-5 h-5" /> Create Identity
+                        <PlusIcon className="w-5 h-5" /> CREATE IDENTITY
                     </button>
                 </Link>
             </div>
@@ -65,12 +65,15 @@ const Dashboard = () => {
                     })
 
                     return (
-                        <div onClick={() => router.push(`/identity/${address}`)} key={idx} className="cursor-pointer flex items-center p-11 drop-shadow-xl bg-white bg-opacity-75 rounded-lg gap-10 h-1/4">
+                        <div onClick={() => router.push(`/identity/${address}`)} key={idx} className="card cursor-pointer flex items-center py-10 px-11 drop-shadow-xl bg-white bg-opacity-50 backdrop-blur-xl  text-black rounded-lg gap-10 h-1/4">
+                            {/* <span className="bg-blue-400 blur-xl fixed left-2 top-2 -z-10 w-1/2 h-1/3 rounded-full bg-opacity-60"></span> */}
                             <div className="flex flex-col">
                                 <span className="font-bold text-xl">{address.slice(0, 10)}</span>
-                                {bal?.formatted} {bal?.symbol}
+                                <span className="mt-2 font-medium text-gray-800">
+                                    {bal?.formatted} {bal?.symbol}
+                                </span>
                             </div>
-                            <span style={{ backgroundColor: color }} className="text-lg grid place-items-center w-10 h-10 rounded-full">{emoji}</span>
+                            <span style={{ backgroundColor: color }} className="text-lg grid place-items-center w-14 h-14 rounded-full">{emoji}</span>
                         </div>
                     )
                 })}
