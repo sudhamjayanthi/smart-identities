@@ -11,7 +11,7 @@ import IdentityFactoryABI from "@/utils/IdentityFactory.json";
 import { EXPLORER, FACTORY_ADDRESS } from "@/lib/constants";
 
 import toast from "react-hot-toast";
-import { CheckCircleIcon } from "@heroicons/react/outline";
+import { PlusSmIcon } from "@heroicons/react/outline";
 
 const Create = () => {
     const router = useRouter();
@@ -99,28 +99,28 @@ const Create = () => {
     }
 
     return (
-        <div className="flex flex-col flex-1 items-center gap-10">
-            <h1 className="text-4xl font-bold my-20">Create Identity</h1>
-            <div className="flex justify-between gap-20 w-1/2">
-                <h2 className="text-3xl font-semibold text-gray-200">Owners</h2>
-                <Modal title="Add Owner" toggleText="+" toggleStyle="bg-green-600 text-3xl text-white font-extralight px-3 py-1 rounded-lg">
-                    <form className="space-y-6 mt-2" onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <label htmlFor="address" className="text-gray-800 font-medium">Address</label>
-                            <input className="border-slate-300 border-[1px] rounded w-full px-2 py-1 outline-none block" {...register("address", { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" defaultValue={owners.length === 0 ? data?.address : ""} />
-                            {errors.address && <span className="text-red-400">Please enter a valid address</span>}
-                        </div>
-                        <div>
-                            <label htmlFor="equity" className="text-gray-800 font-medium">Equity - </label>
-                            <span className="text-gray-600">{watch("equity") || 5}%</span><br />
-                            <input className="w-full " {...register("equity", { required: true, min: 5 })} type="range" min={0} max={100} step={5} defaultValue={5} />
-                            {errors.equity && <span className="text-red-400">Minimum equity should be 5%</span>}
-                        </div>
-                        <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
-                    </form>
-                </Modal>
-            </div>
-            <table className="table-auto border-fixed w-1/2">
+        <div className="flex p-20 flex-1 items-center gap-10">
+            <div>
+                <h1 className="text-4xl font-bold mb-20">Create Identity</h1>
+                <div className="flex justify-between">
+                    <h2 className="text-3xl font-semibold text-gray-200">Owners</h2>
+                    <button className="bg-green-600 rounded-lg px-2"><PlusSmIcon className="w-6 h-6" /></button>
+                </div>
+                <form className="flex items-center gap-2 py-4" onSubmit={handleSubmit(onSubmit)}>
+                    <input placeholder="Wallet Address" className="border-slate-600 border-[1px] bg-transparent rounded px-2 py-1 outline-none " {...register("address", { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" defaultValue={owners.length === 0 ? data?.address : ""} />
+                    {errors.address && <span className="text-red-400">Please enter a valid address</span>}
+                    <input placeholder="Equity %" className="border-slate-600 border-[1px] bg-transparent rounded px-2 py-1 outline-none " {...register("equity", { required: true, min: 1, max: 100 })} type="number" />
+                    {errors.equity && <span className="text-red-400">Equity should be a number between 0-100</span>}
+                    {/* <label htmlFor="equity" className="text-gray-800 font-medium">Equity - </label> */}
+                    {/* <span className="text-gray-600">{watch("equity") || 5}%</span><br /> */}
+                    {/* <input className="w-full " {...register("equity", { required: true, min: 5 })} type="range" min={0} max={100} step={5} defaultValue={5} /> */}
+                    <button type="submit">test</button>
+                </form>
+                <button onClick={createIdentity} className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 my-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none" stroke="#f8f8f8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M14.25 8.75c-.5 2.5-2.385 4.854-5.03 5.38A6.25 6.25 0 0 1 3.373 3.798C5.187 1.8 8.25 1.25 10.75 2.25" /><path d="m5.75 7.75l2.5 2.5l6-6.5" /></g></svg>
+                    DEPLOY
+                </button>
+                {/* <table className="table-auto border-fixed w-1/2">
                 <thead>
                     <tr>
                         <th className="p-2 border w-3/4 border-slate-300">Address</th>
@@ -143,11 +143,8 @@ const Create = () => {
                         )
                     })}
                 </tbody>
-            </table>
-            <button onClick={createIdentity} className="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 my-8">
-                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none" stroke="#f8f8f8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M14.25 8.75c-.5 2.5-2.385 4.854-5.03 5.38A6.25 6.25 0 0 1 3.373 3.798C5.187 1.8 8.25 1.25 10.75 2.25" /><path d="m5.75 7.75l2.5 2.5l6-6.5" /></g></svg>
-DEPLOY
-            </button>
+            </table> */}
+            </div>
         </div>
     )
 }

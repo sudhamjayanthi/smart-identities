@@ -43,12 +43,12 @@ const QuickActions = ({ isOwner, identityConfig }) => {
                     </div>
                 </Modal>
             } */}
-                {isOwner && <Modal title="Withdraw all the native and ERC20 tokens" toggleText="CASHOUT" toggleStyle="btn bg-green-600">
-                    <div className="flex flex-col gap-4 mt-4">
+                {isOwner && <Modal title="Are you sure?" toggleText="CASHOUT" toggleStyle="btn bg-green-600">
+                    <div className="flex flex-col gap-4 mt-4 text-gray-200">
                         <p>
-                            Clicking confirm will transfer all tokens to the owners according to their equities.
+                            Clicking confirm will transfer native and your accepted tokens to the owners according to their equities.
                             <br /><br />
-                            <b> Note : Make sure you have accepted tokens you want to withdraw before continuing!</b>
+                            <b>Make sure you have accepted the tokens to be withdrawn before proceeding!</b>
                         </p>
                         <button onClick={() => {
                             withdraw();
@@ -56,11 +56,10 @@ const QuickActions = ({ isOwner, identityConfig }) => {
                     </div>
                 </Modal>}
                 {isOwner && <Modal title="ARE YOU SURE?" toggleText="DIS-INTEGRATE" toggleStyle="btn bg-red-600">
-                    <div className="flex flex-col gap-4 mt-4">
+                    <div className="flex flex-col gap-4 mt-4 text-gray-200">
                         <span>
-                            Clicking confirm will withdraw all tokens and <b>destroy the identity forever.</b>
-                            <br /><br />
-                            <span> Note : Make sure you have accepted tokens you want to withdraw or <b>your funds will forever be locked!</b></span>
+                            Clicking confirm will withdraw all tokens and destroy the identity forever and this action cannot be reversed.                            <br /><br />
+                            <span>MAKE SURE YOU HAVE ACCEPTED TOKENS YOU WANT TO WITHDRAW OR <b>YOU RISK LOCKING UP THE FUNDS FOREVER!</b></span>
                         </span>
                         <button onClick={() => {
                             disintegrate();

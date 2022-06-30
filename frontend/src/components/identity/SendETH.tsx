@@ -27,15 +27,15 @@ const SendERC20 = ({ to }) => {
     useEffect(() => {
         if (isError) {
             console.log("failed to send eth : \n", error)
-            toast.error("Error occurred, please try again!")
+            toast.error("Error occurred. Make sure you have enough balance!")
         }
     }, [isError])
 
 
     return (
         <Modal title="Send ETH" toggleText="ETH" toggleStyle="btn bg-blue-500">
-            <div className="flex items-center my-4 border-2 rounded-lg p-2">
-                <input className="flex-1 text-lg font-bold outline-none px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
+            <div className="flex items-center my-4 border-2 rounded-lg p-2 border-gray-700 ">
+                <input className="flex-1 text-lg font-semibold outline-none  bg-transparent text-white px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
             </div>
             <button className="btn bg-blue-600 w-full font-medium" onClick={() => sendTransaction({
                 request: {
