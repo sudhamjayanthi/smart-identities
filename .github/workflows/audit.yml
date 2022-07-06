@@ -6,7 +6,6 @@ on:
     branches:
       - master
       - 'releases/*'
-on:
   schedule:
     - cron: '0 10 * * *'
 
