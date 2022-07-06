@@ -1,6 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
 
-
 * {
   font-family: Inter, Helvetica, sans-serif;
 }
@@ -11,14 +10,27 @@ body {
 
 .btn {
   /* @apply text-white text-sm py-2 px-6 rounded-xl; */
-    @apply text-white py-2 px-4 rounded-lg;
-
+  @apply text-white py-2 px-4 rounded-lg;
 }
 
 .subheading {
   @apply font-medium text-xl mb-4 text-white;
 }
 
+/* No autocomplete background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: lightyellow !important;
+}
+
+/* Floating labels
+input:focus-within ~ label,
+input:not(:placeholder-shown) ~ label {
+  @apply transform scale-90 bg-white bg-opacity-20 -translate-y-5 text-blue-500;
+} */
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
@@ -27,7 +39,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-800 scroll-m-40
+  @apply bg-gray-800 scroll-m-40;
 }
 
 ::-webkit-scrollbar-thumb {

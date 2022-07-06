@@ -73,10 +73,10 @@ const Identity = () => {
             </div>
 
             {/* identity details */}
-            <div className="flex flex-col flex-1 p-10 pt-20 gap-14 w-[60%]">
+            <div className="flex flex-col flex-1 p-10 pt-20 gap-10 w-[60%]">
                 {destructed ? "This identity has been destructed" : <>
                     <Owners identityConfig={identityConfig} owners={owners} />
-                    <ERC20s identityConfig={identityConfig} isOwner={isOwner} />
+                    <ERC20s identityConfig={identityConfig} />
                     <NFTs identityConfig={identityConfig} />
                     <QuickActions identityConfig={identityConfig} isOwner={isOwner} />
                 </>

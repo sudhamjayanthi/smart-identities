@@ -83,7 +83,7 @@ const SendERC20 = ({ callback }) => {
         <div className="flex justify-center">
             <button
                 onClick={() => setShowSearchModal(true)}
-                className={`flex items-center font-medium py-2 px-3 rounded-lg w-max justify-around text-white ${token ? "bg-gray-100 bg-opacity-30 drop-shadow-xl" : " bg-blue-600  whitespace-nowrap"}`}
+                className={`flex items-center font-medium py-2 px-3 rounded-lg w-max justify-around text-white outline-none ${token ? "bg-gray-100 bg-opacity-10 drop-shadow-xl" : " bg-blue-600  whitespace-nowrap"}`}
             >
                 {token ? <div className="cursor-pointer flex items-center gap-2 my-2 font-medium">
                     <img src={token.logoURI} className="w-5 h-5 rounded-full" />
@@ -140,7 +140,7 @@ const SendERC20 = ({ callback }) => {
                                                             </div>
                                                         </div>
                                                         <button className="p-1 px-3 mr-4 text-white bg-blue-600 rounded-lg" onClick={() => { callback(customToken); setShowSearchModal(false) }}>add</button>
-                                                    </div> : <div className="text-center mt-4 text-gray-700">No tokens found.</div>}
+                                                    </div> : <div className="text-center mt-4 text-gray-500">No tokens found. Paste address to import custom tokens.</div>}
 
                                                 </div>
                                             ) : searchResults.map((token: token) => {

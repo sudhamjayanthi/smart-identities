@@ -36,7 +36,7 @@ const NFT = ({ nftData: [sentBy, collection, tokenId, sentAt] }) => {
 
     return (
         <div className="flex flex-col items-center gap-2">
-            <a href={`${EXPLORER + "/token/" + collection + "?a=" + tokenId}`}>
+            <a rel="noopener noreferrer" target="_blank"  href={`${EXPLORER + "/token/" + collection + "?a=" + tokenId}`}>
                 <img className="w-60 rounded-lg" src={imageURL} onLoad={() => URL.revokeObjectURL(imageURL)} />
             </a>
             {/* gotta make this into a tooltip */}
