@@ -24,3 +24,4 @@ jobs:
           issue_assignees: sudhamjayanthi
           issue_labels: audit
           dedupe_issues: true
+          working_directory: frontend 
