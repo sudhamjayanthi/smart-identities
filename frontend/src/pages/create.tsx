@@ -101,22 +101,27 @@ const Create = () => {
 
     return (
         <div className="flex-1 px-20 justify-around flex items-center gap-20">
-            <div className="flex-1">
+            <div className="w-[40%]">
                 <h1 className="text-4xl font-bold mb-20">Create Identity</h1>
                 <div className="flex items-center justify-between">
                     <h2 className="text-3xl mb-4 font-semibold text-gray-200">Owners</h2>
-                    <button onClick={() => append(fields.length === 0 ? { address: data?.address, equity: "" } : { address: "", equity: "" })} className="bg-green-600 rounded-lg p-2"><PlusSmIcon className="w-6 h-6" /></button>
+                    <button
+                        onClick={() => append(fields.length === 0 ? { address: data?.address, equity: "" } : { address: "", equity: "" })}
+                        className="bg-green-600 rounded-lg p-2 flex gap-1"
+                    >
+                        <PlusSmIcon className="w-6 h-6" />
+                    </button>
                 </div>
                 <form className="flex flex-col items-start gap-3 pt-3" onSubmit={handleSubmit(onSubmit)}>
                     {fields.map((item, index) => (
                         <div key={item.id} className="flex gap-3 items-start">
                             <span className="flex flex-col gap-1">
-                                <input className={`bg-gray-600 rounded px-3 py-2 outline-none focus:border-[1.5px] ${errors?.owners && errors.owners[index]?.equity ? "focus:border-blue-500" : "focus:border-red-500"}`} placeholder="Address" {...register(`owners.${index}.address`, { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" />
+                                <input className={"bg-gray-600 rounded px-3 py-2 outline-none"} placeholder="Address" {...register(`owners.${index}.address`, { required: true, pattern: /^0x[a-fA-F0-9]{40}$/ })} type="string" />
                                 {errors?.owners && errors.owners[index]?.address && <span className="text-red-400">Please enter a valid address</span>}
                             </span>
                             <span className="flex flex-col gap-1">
-                                <input className={`bg-gray-600 rounded px-3 py-2 outline-none focus:border-[1.5px] ${errors?.owners && errors.owners[index]?.equity ? "focus:border-blue-500" : "focus:border-red-500"}`} placeholder="Equity %"  {...register(`owners.${index}.equity`, { required: true, min: 1, max: 100 })} type="number" />
-                                {errors?.owners && errors.owners[index]?.equity && <span className="text-red-400">Equity should be a integer in 1-100</span>}
+                                <input className={"bg-gray-600 rounded px-3 py-2 outline-none"} placeholder="Equity %"  {...register(`owners.${index}.equity`, { required: true, min: 1, max: 100 })} type="number" />
+                                {errors?.owners && errors.owners[index]?.equity && <span className="text-red-400">Equity should be a integer b/w 1-100</span>}
                             </span>
                             <button onClick={() => remove(index)} className="w-8 h-8 p-1 text-red-600 self-center"><TrashIcon /></button>
                         </div>

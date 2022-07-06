@@ -52,9 +52,9 @@ const SendERC20 = ({ callback }) => {
                 try {
                     const token = new ethers.Contract(search, erc20ABI, signer)
                     const id = tokens.length // ids start from zero
-                    const name = await token.name() // validates if the given address is a erc20 token
-                    const symbol = await token.symbol() // validates if the given address is a erc20 token
-                    const decimals = await token.decimals() // validates if the given address is a erc20 contract
+                    const name = await token.name() 
+                    const symbol = await token.symbol() 
+                    const decimals = await token.decimals()
 
                     const _customToken = {
                         id,
@@ -71,7 +71,7 @@ const SendERC20 = ({ callback }) => {
 
                 } catch (e) {
                     console.log(e)
-                    toast.error("Not a valid ERC20 contract")
+                    toast.error("Failed to fetch token details!")
                 }
             }
 
