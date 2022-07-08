@@ -15,10 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name : go to frontend
-        run : cd frontend
       - name: install dependencies
-        run: yarn install 
+        run: npm install 
       - uses: oke-py/npm-audit-action@v2
         with:
           audit_level: moderate
@@ -26,3 +24,4 @@ jobs:
           issue_assignees: sudhamjayanthi
           issue_labels: audit
           dedupe_issues: true
+          working_directory: frontend
