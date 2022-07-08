@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - master
-      - 'releases/*'
+      - "releases/*"
   schedule:
-    - cron: '0 10 * * *'
+    - cron: "0 10 * * *"
 
 jobs:
   scan:
@@ -15,10 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: go to frontend
-        run: cd frontend
       - name: install dependencies
-        run: npm install 
+        run: cd frontend && npm install
       - uses: oke-py/npm-audit-action@v2
         with:
           audit_level: moderate
@@ -26,3 +24,4 @@ jobs:
           issue_assignees: sudhamjayanthi
           issue_labels: audit
           dedupe_issues: true
+          working_directory: frontend
