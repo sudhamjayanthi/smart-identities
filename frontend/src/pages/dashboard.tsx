@@ -43,7 +43,6 @@ const Dashboard = () => {
     const NoIdentity = () => {
         return (
             <div className="flex flex-col flex-1 justify-center items-center gap-10">
-                {/* <Image className="rounded" src="https://c.tenor.com/6qtajk7mWzgAAAAM/funny-dance.gif" width="250" height="200" alt="crying cat" /> */}
                 <h1 className="font-bold text-4xl">No identities found</h1>
                 <p className="text-gray-400 w-[35%] text-center">Identities are smart contracts that can be owned by multiple addresses to act together as single identity in this anon web3 world ✨</p>
                 <Link href={"/create"}>
@@ -73,7 +72,7 @@ const Dashboard = () => {
                                     {bal?.formatted} {bal?.symbol}
                                 </span>
                             </div>
-                            <span style={{ backgroundColor: color }} className="text-lg grid place-items-center w-14 h-14 rounded-full">{emoji}</span>
+                            <span style={{ backgroundColor: color }} className="text-3xl grid place-items-center w-16 h-16 rounded-full">{emoji}</span>
                         </div>
                     )
                 })}
