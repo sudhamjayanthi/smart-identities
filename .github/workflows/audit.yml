@@ -6,26 +6,27 @@ on:
     branches:
       - master
       - "releases/*"
-                      
+
 jobs:
   build:
-    name: npm audit (frontend)
+    name: Audit
     runs-on: ubuntu-latest
     defaults: 
       run:
         working-directory: ./frontend
-        
+
     steps:
-      - name : Clone Repo
+      - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Go to frontend & Install Dependencies
-        run: npm install --legacy-peer-deps
-      
-      - name: Audit and PR fixes
-        uses: luisfontes19/npm-audit-action@v0.1.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - uses: luisfontes19/npm-audit-action@v0.1.0
         with:
           fix: true
-          git-user: 0xSJ Clone
-          git-email: robot@sudham.tk
           github-token: ${{ secrets.GH_TOKEN }}
+          
+          
