@@ -23,7 +23,6 @@ jobs:
         uses: luisfontes19/npm-audit-action@v0.1.0
         with:
           fix: true
-          level: moderate
           git-user: 0xSJ Clone
           git-email: robot@sudham.tk
           github-token: ${{ secrets.GH_TOKEN }}
