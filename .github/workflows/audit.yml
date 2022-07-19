@@ -11,6 +11,9 @@ jobs:
   build:
     name: Audit
     runs-on: ubuntu-latest
+    defaults: 
+      run:
+        working-directory: ./frontend
     
     steps:
       - name: Checkout
@@ -20,9 +23,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-          
-      - name: Go to frontend
-        run: cd frontend
         
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
