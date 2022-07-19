@@ -32,4 +32,4 @@ jobs:
         with:
           fix: true
           github-token: ${{ secrets.GITHUB_TOKEN }}   
-          
+          project-path: ./frontend
