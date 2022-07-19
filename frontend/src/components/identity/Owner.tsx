@@ -8,8 +8,9 @@ const Owner = ({ identityConfig, address, idx }) => {
 
     return <a
         target={"_blank"}
+        rel={"noopener noreferrer"}
         href={`${EXPLORER}/address/${address}`}
-        className="p-2 font-semibold text-center text-gray-900 min-w-min text-sm whitespace-nowrap px-4"
+        className="py-2 font-medium text-center text-gray-800 min-w-min text-sm whitespace-nowrap px-4"
         style={{ backgroundColor: colors[idx % colors.length], width: `${equity}%` }}>{address.slice(0, 7)} {equity && `(${equity.toString()}%)`}
     </a>
 }

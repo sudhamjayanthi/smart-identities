@@ -1,8 +1,10 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-const Modal = ({ title, toggleStyle, toggleText, children }) => {
+const Modal = (props) => {
     let [isOpen, setIsOpen] = useState(false)
+
+    const { title, toggleStyle, toggleText, children } = props;
 
     function closeModal() {
         setIsOpen(false)
@@ -17,9 +19,12 @@ const Modal = ({ title, toggleStyle, toggleText, children }) => {
             <div >
                 <button
                     onClick={openModal}
-                    className={toggleStyle}
+                    className={`flex gap-2 ${toggleStyle}`}
                 >
-                    {toggleText}
+                    {props.icon && props.icon}
+                    <span className="font-medium">
+                        {toggleText}
+                    </span>
                 </button>
             </div>
 
@@ -27,14 +32,8 @@ const Modal = ({ title, toggleStyle, toggleText, children }) => {
                 <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     <Transition.Child
                         as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm" />
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -48,10 +47,10 @@ const Modal = ({ title, toggleStyle, toggleText, children }) => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all ">
+                                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all ">
                                     <Dialog.Title
                                         as="h3"
-                                        className="text-lg font-medium text-gray-900"
+                                        className="text-lg font-medium text-white"
                                     >
                                         {title}
                                     </Dialog.Title>

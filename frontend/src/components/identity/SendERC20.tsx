@@ -45,9 +45,9 @@ const SendERC20 = ({ to }) => {
     }
 
     return (
-        <Modal title="Send ERC20" toggleText="send erc20" toggleStyle="btn bg-gradient-to-r from-blue-700 to-sky-400">
-            <div className="flex items-center my-4 border-2 rounded-lg p-2">
-                <input className="flex-1 text-lg font-bold  outline-none px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
+        <Modal title="Send ERC20" toggleText="ERC20" toggleStyle="btn bg-blue-500">
+            <div className="flex items-center my-4 border-2 border-gray-700 rounded-lg p-2">
+                <input className="flex-1 text-lg font-semibold bg-transparent text-white outline-none px-2" placeholder="0.0" type="number" onChange={e => setAmount(e.target.value)} />
                 <PickToken callback={(token: token) => setToken(token)} />
             </div>
             <button className="btn bg-blue-600 w-full font-medium" onClick={onSend}>Send</button>
