@@ -38,5 +38,4 @@ jobs:
           project-path: ./frontend
           git-user: 0xSJ Bot
           git-email: robots@sudham.tk
-          json: true
           only: prod
