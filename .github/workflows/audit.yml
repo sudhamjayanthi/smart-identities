@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Go to frontend & Install Dependencies
-        run: cd frontend && npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps
       
       - name: Audit and PR fixes
         uses: luisfontes19/npm-audit-action@v0.1.0
