@@ -9,14 +9,17 @@ on:
                       
 jobs:
   build:
-    name: npm audit
+    name: npm audit (frontend)
     runs-on: ubuntu-latest
-
+    defaults: 
+      run:
+        working-directory: ./frontend
+        
     steps:
-      - name : Checkout
+      - name : Clone Repo
         uses: actions/checkout@v2
       
-      - name: Install Dependencies
+      - name: Go to frontend & Install Dependencies
         run: cd frontend && npm install --legacy-peer-deps
       
       - name: Audit and PR fixes
