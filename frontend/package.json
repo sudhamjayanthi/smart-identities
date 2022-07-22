@@ -11,7 +11,7 @@
 	"dependencies": {
 		"@headlessui/react": "^1.6.4",
 		"@heroicons/react": "^1.0.6",
-		"@rainbow-me/rainbowkit": "^0.2.1",
+		"@rainbow-me/rainbowkit": "0.2.1",
 		"autoprefixer": "^10.4.7",
 		"ethers": "^5.6.7",
 		"flowbite": "^1.4.7",
@@ -27,7 +27,7 @@
 		"react-query": "^3.39.1",
 		"react-select-search": "^3.0.9",
 		"tailwindcss": "^3.0.24",
-		"wagmi": "^0.4.2"
+		"wagmi": "0.4.2"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.35",
