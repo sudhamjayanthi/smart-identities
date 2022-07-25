@@ -9,15 +9,7 @@ import { erc20ABI, useNetwork, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 
-interface token {
-    id: number
-    chainId: number,
-    name: string,
-    symbol: string,
-    decimals: number,
-    logoURI: string,
-    address: string,
-}
+
 
 const SendERC20 = ({ callback }) => {
     const { data: signer } = useSigner()
@@ -52,8 +44,8 @@ const SendERC20 = ({ callback }) => {
                 try {
                     const token = new ethers.Contract(search, erc20ABI, signer)
                     const id = tokens.length // ids start from zero
-                    const name = await token.name() 
-                    const symbol = await token.symbol() 
+                    const name = await token.name()
+                    const symbol = await token.symbol()
                     const decimals = await token.decimals()
 
                     const _customToken = {
@@ -143,7 +135,7 @@ const SendERC20 = ({ callback }) => {
                                                     </div> : <div className="text-center mt-4 text-gray-500">No tokens found. Paste address to import custom tokens.</div>}
 
                                                 </div>
-                                            ) : searchResults.map((token: token) => {
+                                            ) : searchResults.map((token) => {
                                                 return (
                                                     <>
                                                         <Combobox.Option className={({ active }) => `flex items-center gap-5 p-4 cursor-pointer rounded-lg text-gray-200 ${active && 'bg-gray-700'}`} key={token.address} value={token.id}>
