@@ -9,7 +9,15 @@ import { erc20ABI, useNetwork, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 
-
+interface token {
+    chainId: number,
+    name: string,
+    symbol: string,
+    decimals: number,
+    logoURI: string,
+    address: string,
+    id: number
+}
 
 const SendERC20 = ({ callback }) => {
     const { data: signer } = useSigner()
