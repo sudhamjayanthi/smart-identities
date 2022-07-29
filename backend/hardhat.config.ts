@@ -19,10 +19,10 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY as string],
     },
     hardhat: {
-      forking: {
-        url: "https://polygon-mumbai.g.alchemy.com/v2/GMWseXL8mbgbjSdFRglCqZKSj4z9qhgx",
-        blockNumber: 26784156,
-      }
+      // forking: {
+      //   url: "https://polygon-mumbai.g.alchemy.com/v2/GMWseXL8mbgbjSdFRglCqZKSj4z9qhgx",
+      //   blockNumber: 26784156,
+      // }
     }
   },
   etherscan: {
