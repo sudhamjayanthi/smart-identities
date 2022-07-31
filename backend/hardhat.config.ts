@@ -18,11 +18,9 @@ const config: HardhatUserConfig = {
       url: "https://kovan.optimism.io/",
       accounts: [process.env.PRIVATE_KEY as string],
     },
-    hardhat: {
-      // forking: {
-      //   url: "https://polygon-mumbai.g.alchemy.com/v2/GMWseXL8mbgbjSdFRglCqZKSj4z9qhgx",
-      //   blockNumber: 26784156,
-      // }
+    optimism: {
+      url: " https://mainnet.optimism.io",
+      accounts: [process.env.PRIVATE_KEY as string]
     }
   },
   etherscan: {
