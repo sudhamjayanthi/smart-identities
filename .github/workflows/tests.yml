@@ -25,5 +25,5 @@ jobs:
         working-directory: backend
 
       - name: Run Tests
-        run: ls && cd backend && ls && yarn compile && ls && npx hardhat test
+        run: ls && cd backend && ls && npx hardhat compile && ls && npx hardhat test
        
