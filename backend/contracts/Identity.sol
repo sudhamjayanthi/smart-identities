@@ -24,26 +24,52 @@ interface IERC721Receiver {
     ) external returns (bytes4);
 }
 
-/// @title Identity
+/// @title smart identity
 /// @author Sudham Jayanthi
+/// @notice A POC to form decentralised entities
 contract Identity is IERC721Receiver {
+    /// @notice stores the list of owners
     address[] public owners;
-    mapping(address => uint256) public equities; // percentage of equity as a integer (1-100)
-    mapping(address => bool) public isOwner;
 
+    /// @notice stores the equity %s of the owners, as integers (1-100)
+    /// @dev the equity at any index is of the owner at the same index
+    mapping(address => uint256) public equities;
+
+    /// @notice stores the list of accepted tokens
+    /// @dev only accepted tokens are cashed out in withdraw()
     address[] public acceptedTokens;
 
+    /// @notice custom structure to track the nfts sent to the identity
+    /// @param sentBy address of the owner which sent the token
+    /// @param collection collection address
+    /// @param tokenId token id
+    /// @param sentAt block number at which nft is sent
     struct NFT {
-        address sentBy; // original owner of the nft
+        address sentBy;
         address collection;
         uint256 tokenId;
-        uint256 sentAt; // block number at which nft is sent
+        uint256 sentAt;
     }
 
+    /// @notice stores the list of nfts sent to the identity
     NFT[] public nfts;
 
+    /// @dev a mapping to implement the onlyOwner modifier easily
+    mapping(address => bool) public isOwner;
+
+    /// @notice a modifier to gate access to certain functions
+    modifier onlyOwners() {
+        require(isOwner[msg.sender], "not a owner");
+        _;
+    }
+
+    /// @notice constructs the identity with given owners and equities
+    /// @param _owners list of owners of the identity
+    /// @param _equities list of equities corresponding to the owners
+    /// @dev the equity at any index is of the owner at the same index
     constructor(address[] memory _owners, uint256[] memory _equities) {
         owners = _owners;
+
         for (uint256 i = 0; i < _owners.length; ) {
             isOwner[_owners[i]] = true;
             equities[_owners[i]] = _equities[i];
@@ -54,38 +80,43 @@ contract Identity is IERC721Receiver {
         }
     }
 
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes memory
-    ) public virtual override returns (bytes4) {
-        return this.onERC721Received.selector;
-    }
-
+    /// @notice returns a list of the all owners of the identity
     function getOwners() external view returns (address[] memory) {
         return owners;
     }
 
+    /// @notice returns a list of all the nfts sent to the identity
     function getNfts() external view returns (NFT[] memory) {
         return nfts;
     }
 
+    /// @notice returns a list of all tokens accepted by the owners of identity
     function getAcceptedTokens() external view returns (address[] memory) {
         return acceptedTokens;
     }
 
+    /// @notice transfers a nft to the identity
+    /// @param nftCollection address of the nft collection
+    /// @param tokenId token id of the nft
+    /// @dev nft needs to be approved to the identity before calling this function
     function transferNFT(address nftCollection, uint256 tokenId) public {
+        // transfer nft
         IERC721(nftCollection).safeTransferFrom(
             msg.sender,
             address(this),
             tokenId
         );
 
+        // store it in the contract
         NFT memory nft = NFT(msg.sender, nftCollection, tokenId, block.number);
         nfts.push(nft);
     }
 
+    /// @notice checks if a certain nft is owned by the identity
+    /// @param nftCollection address of the nft collection
+    /// @param tokenId token id of the nft
+    /// @dev returns (true, number of blocks passed since the nft is sent) if the nft is owned by the identity
+    /// @dev returns (false, 0) otherwise
     function hasNft(address nftCollection, uint256 tokenId)
         external
         view
@@ -107,15 +138,18 @@ contract Identity is IERC721Receiver {
         return (doIHave, since);
     }
 
+    /// @notice accepts a erc20 token 
+    /// @param token address of the erc20 token to be accepted
     function acceptErc20(address token) public onlyOwners {
-        // Anyone can transfer ERC20 tokens or native token to the contract. Any owner can add the addresses of tokens that they're willing to accept
         acceptedTokens.push(token);
     }
 
-    // @notice  Withdraws native and erc20 tokens according to the equities of owners
+    /// @notice withdraws native & erc20 tokens according to the equities of owners
+    /// @dev only the erc20 tokens accepted by owners using acceptErc20() are withdrawn 
     function withdraw() public onlyOwners {
         uint256 _etherBal = address(this).balance;
 
+        // returns ether according to the equities of owners
         for (uint256 i = 0; i < owners.length; ) {
             payable(owners[i]).transfer(
                 (_etherBal * equities[owners[i]]) / 100
@@ -126,6 +160,7 @@ contract Identity is IERC721Receiver {
             }
         }
 
+        // returns erc20s according to the equities of owners
         for (uint256 j = 0; j < acceptedTokens.length; j++) {
             uint256 erc20Bal = IERC20(acceptedTokens[j]).balanceOf(
                 address(this)
@@ -140,8 +175,14 @@ contract Identity is IERC721Receiver {
         }
     }
 
+    /// @notice disintegrates the identity - returns ether & erc20 tokens back to the owners according to their equitites and nfts to back to their original owners
+    /// @dev only the erc20 tokens accepted by owners using acceptErc20() are withdrawn
     function disintegrate() public onlyOwners {
+        
+        // withdraws ether & erc20 tokens
         withdraw();
+        
+        // returns nfts to their original owners
         for (uint256 i = 0; i < nfts.length; ) {
             IERC721(nfts[i].collection).safeTransferFrom(
                 address(this),
@@ -153,13 +194,21 @@ contract Identity is IERC721Receiver {
                 ++i;
             }
         }
+
+        // destructs the contract forever 
         selfdestruct(payable(msg.sender));
     }
 
+    /// @dev this allows other contracts to send ether to the identity
     receive() external payable {}
 
-    modifier onlyOwners() {
-        require(isOwner[msg.sender], "not a owner");
-        _;
+    /// @dev this allows the identity to recieve erc721 tokens
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes memory
+    ) public virtual override returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }
