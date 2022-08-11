@@ -1,4 +1,4 @@
-[
+const tokens = [
   {
     chainId: 10,
     address: "0x8700daec35af8ff88c16bdf0418774cb3d7599b4",
@@ -497,3 +497,5 @@
     id: 54,
   },
 ];
+
+export default tokens;  
