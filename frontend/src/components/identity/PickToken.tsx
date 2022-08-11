@@ -37,7 +37,7 @@ const SendERC20 = ({ callback }) => {
         });
 
         if (value) {
-            return fuse.search(value);
+            return fuse.search(value).map(({ item }) => item);
         }
 
         return tokens;
@@ -78,6 +78,7 @@ const SendERC20 = ({ callback }) => {
             getTokenDetails()
         }
     }, [search])
+
 
     return (
         <div className="flex justify-center">
@@ -143,7 +144,7 @@ const SendERC20 = ({ callback }) => {
                                                     </div> : <div className="text-center mt-4 text-gray-500">No tokens found. Paste address to import custom tokens.</div>}
 
                                                 </div>
-                                            ) : searchResults.map((token) => {
+                                            ) : searchResults.map((token : token) => {
                                                 return (
                                                     <>
                                                         <Combobox.Option className={({ active }) => `flex items-center gap-5 p-4 cursor-pointer rounded-lg text-gray-200 ${active && 'bg-gray-700'}`} key={token.address} value={token.id}>
