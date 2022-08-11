@@ -115,7 +115,7 @@ contract Identity is IERC721Receiver {
     /// @notice checks if a certain nft is owned by the identity
     /// @param nftCollection address of the nft collection
     /// @param tokenId token id of the nft
-    /// @dev returns (true, number of blocks passed since the nft is sent) if the nft is owned by the identity
+    /// @dev returns (true, number of blocks since the nft is transferred to identity) if the nft is owned by the identity
     /// @dev returns (false, 0) otherwise
     function hasNft(address nftCollection, uint256 tokenId)
         external
@@ -125,7 +125,9 @@ contract Identity is IERC721Receiver {
         bool doIHave;
         uint256 since;
 
-        for (uint256 i = 0; i < nfts.length; ++i) {
+        uint256 _nftsLength = nfts.length;
+
+        for (uint256 i = 0; i < _nftsLength; ) {
             if (
                 nfts[i].collection == nftCollection &&
                 nfts[i].tokenId == tokenId
@@ -133,24 +135,30 @@ contract Identity is IERC721Receiver {
                 doIHave = true;
                 since = block.number - nfts[i].sentAt;
             }
+
+            unchecked {
+                ++i;
+            }
         }
 
         return (doIHave, since);
     }
 
-    /// @notice accepts a erc20 token 
+    /// @notice accepts a erc20 token
     /// @param token address of the erc20 token to be accepted
     function acceptErc20(address token) public onlyOwners {
         acceptedTokens.push(token);
     }
 
     /// @notice withdraws native & erc20 tokens according to the equities of owners
-    /// @dev only the erc20 tokens accepted by owners using acceptErc20() are withdrawn 
+    /// @dev only the erc20 tokens accepted by owners using acceptErc20() are withdrawn
     function withdraw() public onlyOwners {
         uint256 _etherBal = address(this).balance;
 
+        uint256 _ownersLength = owners.length;
+
         // returns ether according to the equities of owners
-        for (uint256 i = 0; i < owners.length; ) {
+        for (uint256 i = 0; i < _ownersLength; ) {
             payable(owners[i]).transfer(
                 (_etherBal * equities[owners[i]]) / 100
             );
@@ -160,13 +168,15 @@ contract Identity is IERC721Receiver {
             }
         }
 
+        uint256 _tokensLength = acceptedTokens.length;
+
         // returns erc20s according to the equities of owners
-        for (uint256 j = 0; j < acceptedTokens.length; j++) {
+        for (uint256 j = 0; j < _tokensLength; j++) {
             uint256 erc20Bal = IERC20(acceptedTokens[j]).balanceOf(
                 address(this)
             );
 
-            for (uint256 i = 0; i < owners.length; i++) {
+            for (uint256 i = 0; i < _ownersLength; i++) {
                 IERC20(acceptedTokens[j]).transfer(
                     owners[i],
                     (erc20Bal * equities[owners[i]]) / 100
@@ -178,12 +188,13 @@ contract Identity is IERC721Receiver {
     /// @notice disintegrates the identity - returns ether & erc20 tokens back to the owners according to their equitites and nfts to back to their original owners
     /// @dev only the erc20 tokens accepted by owners using acceptErc20() are withdrawn
     function disintegrate() public onlyOwners {
-        
         // withdraws ether & erc20 tokens
         withdraw();
-        
+
+        uint256 _nftsLength = nfts.length;
+
         // returns nfts to their original owners
-        for (uint256 i = 0; i < nfts.length; ) {
+        for (uint256 i = 0; i < _nftsLength; ) {
             IERC721(nfts[i].collection).safeTransferFrom(
                 address(this),
                 nfts[i].sentBy,
@@ -195,7 +206,7 @@ contract Identity is IERC721Receiver {
             }
         }
 
-        // destructs the contract forever 
+        // destructs the contract forever
         selfdestruct(payable(msg.sender));
     }
 
@@ -207,7 +218,7 @@ contract Identity is IERC721Receiver {
         address,
         address,
         uint256,
-        bytes memory
+        bytes calldata
     ) public virtual override returns (bytes4) {
         return this.onERC721Received.selector;
     }

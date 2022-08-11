@@ -19,7 +19,7 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY as string],
     },
     optimism: {
-      url: " https://mainnet.optimism.io",
+      url: "https://mainnet.optimism.io",
       accounts: [process.env.PRIVATE_KEY as string]
     }
   },
@@ -27,6 +27,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       polygonMumbai: process.env.POLYSCAN as string,
       optimisticKovan: process.env.OPTIMISM_ETHERSCAN as string,
+      optimisticEthereum: process.env.OPTIMISM_ETHERSCAN as string,
     },
   },
 };
