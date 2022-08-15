@@ -68,9 +68,9 @@ const App = ({ Component, pageProps }) => {
 							<Script async src="https://cdn.splitbee.io/sb.js"></Script>
 						</Head>
 
-						{mounted ? <><Toaster /><FeedbackWidget /></> : null}
-
+						{mounted ? <Toaster /> : null}
 						<Nav />
+						{mounted ? <FeedbackWidget /> : null}
 
 						<Component {...pageProps} />
 
