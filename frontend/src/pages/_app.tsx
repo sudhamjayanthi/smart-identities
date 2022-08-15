@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import Head from "next/head";
-import Script from "next/script";
 
 import Nav from "@components/Nav";
 import FeedbackWidget from "@components/FeedbackWidget";
@@ -71,7 +70,6 @@ const App = ({ Component, pageProps }) => {
 						<Nav />
 						{mounted ? <Toaster /> : null}
 						{mounted ? <FeedbackWidget /> : null}
-
 						<Component {...pageProps} />
 
 					</div>

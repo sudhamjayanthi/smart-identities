@@ -6,6 +6,11 @@ import { SupportIcon } from "@heroicons/react/solid";
 function FeedbackWidget() {
     const { data: user } = useAccount();
 
+    // ideally should create a sep component for this too, hacky method for now
+    if ((window as any).splitbee) {
+        (window as any).splitbee.user.set({ address: user?.address });
+    }
+
     return (
         <>
             {user?.address &&
