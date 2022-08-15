@@ -65,11 +65,11 @@ const App = ({ Component, pageProps }) => {
 							<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 							<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 							<link rel="manifest" href="/site.webmanifest" />
-							<Script async src="https://cdn.splitbee.io/sb.js"></Script>
+							<script async data-api="/_hive" src="/bee.js"></script>
 						</Head>
 
-						{mounted ? <Toaster /> : null}
 						<Nav />
+						{mounted ? <Toaster /> : null}
 						{mounted ? <FeedbackWidget /> : null}
 
 						<Component {...pageProps} />
