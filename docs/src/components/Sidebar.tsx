@@ -24,7 +24,7 @@ export const Sidebar: React.FC = ({ ...props }) => {
           <div tw="flex items-center justify-between">
             <Link tw="w-full flex items-center" href="/">
               <div tw="flex items-center">
-                <Logo tw="w-8 h-8 mr-4" /> <span tw="font-bold">Railway</span>
+                <span tw="font-bold">Smart Identities Docs</span>
               </div>
             </Link>
 
@@ -66,7 +66,7 @@ const SidebarContent: React.FC = () => {
                     tw`hover:bg-gray-100 hover:text-foreground`,
                     tw`focus:outline-none focus:bg-pink-100`,
                     pathname === page.slug &&
-                      tw`bg-pink-100 text-pink-900 hover:bg-pink-100 border-r-2 border-pink-500`,
+                    tw`bg-pink-100 text-pink-900 hover:bg-pink-100 border-r-2 border-pink-500`,
                   ]}
                 >
                   {page.title}

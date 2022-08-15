@@ -62,7 +62,7 @@ export const DocsLayout: React.FC<Props> = ({
   return (
     <>
       <SEO
-        title={`${frontMatter.title} | Railway Docs`}
+        title={`${frontMatter.title} | Docs`}
         image={getOGImage(frontMatter.title)}
       />
       <div tw="max-w-full">

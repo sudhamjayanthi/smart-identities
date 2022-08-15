@@ -19,22 +19,21 @@ const Home: NextPage = () => {
           ]}
         >
           <div tw="py-12 pl-12 z-10">
-            <div tw="text-3xl font-bold text-white mb-4">Quickstart Guide</div>
-            <div tw="text-xl font-normal text-white mb-12 max-w-md">
-              A short guide on making your first deploy on Railway in a couple
-              of minutes.
+            <div tw="text-3xl font-bold text-white mb-4">What are smart identities?</div>
+            <div tw="text-lg font-normal text-white mb-12 max-w-2xl">
+              Smart identities are contracts that can be formed by a group of addresses to act as a single identity on-chain ✨
             </div>
             <ButtonLink
-              href="/getting-started"
+              href="/learn-more"
               tw="w-40 bg-pink-700 text-white text-center text-lg hover:bg-pink-500"
             >
               <div tw="flex flex-row justify-center items-center font-semibold">
                 <ArrowRight tw="mr-1" />
-                Get Started
+                Learn More
               </div>
             </ButtonLink>
           </div>
-          <div tw="absolute -bottom-8 right-0 opacity-50 z-0 lg:opacity-100">
+          {/* <div tw="absolute -bottom-8 right-0 opacity-50 z-0 lg:opacity-100">
             <NextImage
               src="/images/code-terminal.svg"
               alt="Graphic of Terminal"
@@ -44,10 +43,10 @@ const Home: NextPage = () => {
               width={310}
               quality={100}
             />
-          </div>
+          </div> */}
         </div>
 
-        <div tw="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
+        {/* <div tw="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
           <OverviewLink href="reference/starters">
             <OverviewLinkIcon>
               <Zap size="28" tw="text-pink-800" />
@@ -93,7 +92,7 @@ const Home: NextPage = () => {
               </OverviewLinkText>
             </OverviewLinkTextbox>
           </OverviewLink>
-        </div>
+        </div> */}
         <div tw="grid grid-cols-1 mt-14 items-center md:grid-cols-8">
           <div tw="bg-gray-100 rounded-md col-span-5 p-6">
             <div tw="flex text-base font-semibold mb-4">
@@ -106,7 +105,7 @@ const Home: NextPage = () => {
               </div>
               <Link
                 tw="flex text-pink-800 items-center mt-2 hover:text-pink-600"
-                href="https://github.com/railwayapp/docs"
+                href="https://github.com/sudhamjayanthi/smart-identities/docs"
               >
                 <span tw="mr-2">Docs Repository</span> <ArrowRight />
               </Link>
@@ -115,17 +114,17 @@ const Home: NextPage = () => {
           <div tw="mt-8 flex flex-col ml-8 col-span-3 gap-4 md:mt-0">
             <OverviewSecondaryLink href="https://discord.gg/railway">
               <DiscordIcon tw="w-8 h-8" />
-              <div>Join our Discord Server </div>
-              <ArrowRight />
+              <div>Join Our Discord Server </div>
+              {/* <ArrowRight /> */}
             </OverviewSecondaryLink>
-            <OverviewSecondaryLink href="https://railway.app/changelog">
+            {/* <OverviewSecondaryLink href="https://railway.app/changelog">
               <RssIcon tw="w-8 h-8 text-pink-700" />
               Check out the Changelog <ArrowRight />
             </OverviewSecondaryLink>
             <OverviewSecondaryLink href="https://twitter.com/Railway">
               <TwitterIcon tw="w-8 h-8" />
               Follow Us on Twitter <ArrowRight />
-            </OverviewSecondaryLink>
+            </OverviewSecondaryLink> */}
           </div>
         </div>
       </div>

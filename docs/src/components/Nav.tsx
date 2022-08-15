@@ -15,10 +15,10 @@ export const Nav: React.FC = () => {
       <ul>
         <li>
           <Link
-            href="https://railway.app/login"
+            href="https://smart-identities.ml"
             tw="flex items-center space-x-2 text-gray-400 text-sm hover:text-pink-500"
           >
-            <span>Go to Railway</span>
+            <span>Go to App</span>
             <ArrowRight tw="w-4 h-4" />
           </Link>
         </li>

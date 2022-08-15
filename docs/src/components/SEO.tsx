@@ -9,9 +9,9 @@ export interface Props extends NextSeoProps {
   image?: string;
 }
 
-const title = "Railway Docs";
-export const url = "https://docs.railway.app";
-const description = "Documentation for Railway";
+const title = "Smart Identities Docs";
+export const url = "https://docs.smart-identities.ml";
+const description = "Documentation for Smart Identities.";
 const image = "https://docs.railway.app/og.png";
 
 const config: DefaultSeoProps = {
@@ -24,7 +24,7 @@ const config: DefaultSeoProps = {
     images: [{ url: image }],
   },
   twitter: {
-    handle: "@Railway",
+    handle: "@sudhamjayanthi",
     cardType: "summary_large_image",
   },
 };
@@ -42,10 +42,10 @@ export const SEO: React.FC<Props> = ({ image, ...props }) => {
         {...(image == null
           ? {}
           : {
-              openGraph: {
-                images: [{ url: image }],
-              },
-            })}
+            openGraph: {
+              images: [{ url: image }],
+            },
+          })}
       />
 
       <Head>

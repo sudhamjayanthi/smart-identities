@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import "twin.macro";
 import { Link } from "../components/Link";
@@ -7,24 +8,9 @@ const NotFoundPage: React.FC = () => (
   <>
     <SEO title="Not Found" />
     <div tw="prose">
-      <h1>Page not found</h1>
-
-      <p>Maybe you were looking for one of the following</p>
-
-      <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/getting-started">Getting Started</Link>
-        </li>
-        <li>
-          <Link href="/develop/cli">CLI Quick Start</Link>
-        </li>
-        <li>
-          <Link href="/deploy/railway-up">Railway Up</Link>
-        </li>
-      </ul>
+      <h1>404: Page not found</h1>
+      
+      <p>Get back to <Link href="/">Home</Link></p>
     </div>
   </>
 );
