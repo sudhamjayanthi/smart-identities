@@ -105,7 +105,7 @@ const Home: NextPage = () => {
               </div>
               <Link
                 tw="flex text-pink-800 items-center mt-2 hover:text-pink-600"
-                href="https://github.com/sudhamjayanthi/smart-identities/docs"
+                href="https://github.com/sudhamjayanthi/smart-identities/tree/master/docs"
               >
                 <span tw="mr-2">Docs Repository</span> <ArrowRight />
               </Link>
