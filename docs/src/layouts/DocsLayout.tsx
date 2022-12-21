@@ -26,7 +26,7 @@ export const DocsLayout: React.FC<Props> = ({
   const { pathname } = useRouter();
   const gitHubFileLink = useMemo(
     () =>
-      `https://github.com/railwayapp/docs/edit/main/src/pages${pathname}.md`,
+      `https://github.com/sudhamjayanthi/smart-identities/edit/master/docs/src/pages${pathname}.md`,
     [pathname],
   );
 
