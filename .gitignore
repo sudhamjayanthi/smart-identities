@@ -10,3 +10,10 @@ artifacts
 
 # frontend
 .next
+
+# gh actions local testing config
+.actrc
+
+# mac
+.DS_store
+
