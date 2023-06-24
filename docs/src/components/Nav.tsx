@@ -15,7 +15,7 @@ export const Nav: React.FC = () => {
       <ul>
         <li>
           <Link
-            href="https://smart-identities.ml"
+            href="https://smart-identities.sudham.xyz"
             tw="flex items-center space-x-2 text-gray-400 text-sm hover:text-pink-500"
           >
             <span>Go to App</span>

@@ -10,7 +10,7 @@ export interface Props extends NextSeoProps {
 }
 
 const title = "Smart Identities Docs";
-export const url = "https://docs.smart-identities.ml";
+export const url = "https://docs.smart-identities.sudham.xyz";
 const description = "Documentation for Smart Identities.";
 const image = "https://docs.railway.app/og.png";
 

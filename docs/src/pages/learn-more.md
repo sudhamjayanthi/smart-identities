@@ -11,7 +11,7 @@ Here is a quick demo of how the project actually works.
 
 
 ## Try it out
-The frontend is live at [app.smart-identities.ml](https://app.smart-identities.ml?ref=docs), ready to use. It interacts with the protocol on optimism mainnet.
+The frontend is live at [app.smart-identities.sudham.xyz](https://app.smart-identities.sudham.xyz?ref=docs), ready to use. It interacts with the protocol on optimism mainnet.
 
 If you wanna try it out on the testnet, checkout [/contracts](/develop/contracts#contract-addresses)
 
