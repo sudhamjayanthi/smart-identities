@@ -5,3 +5,5 @@ smart identities are contracts that can be formed by a group of addresses to act
 thanks to madhavan for the [idea!](https://mirror.xyz/madhavanmalolan.eth/rB9taCl2uKAYb-Hy8QbZPgF4ElB5rNZXMhCEyxp6z0Y)
 
 click [here](https://docs.smart-identities.sudham.xyz/) for docs!
+
+**ps:** the contracts were not professionally audited and this project is no longer maintained. use with caution! ⚠️
