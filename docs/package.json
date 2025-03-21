@@ -48,7 +48,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-mdx-enhanced": "^5.0.0",
     "next-sitemap": "^1.6.57",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.32",
     "prettier": "^2.2.1",
     "prisma": "3.9.0",
     "remark-autolink-headings": "^6.0.1",
